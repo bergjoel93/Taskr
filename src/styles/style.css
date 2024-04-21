@@ -1,0 +1,327 @@
+@import url('https://fonts.googleapis.com/css2?family=Reddit+Mono:wght@200..900&display=swap');
+
+:root {
+    --sidebarColorLight: #fffbeb;
+    --addButtonText: #a81f00;
+    --highlightColor: #ffedd5;
+    --profileImg: '../assets/user6.png';
+    --highPriority: #fca5a5;
+    --regularPriority: #bbf7d0;
+    --lowPriority: #93c5fd;
+    --lightTextColor: #6b7280;
+}
+* {
+    font-family: "Reddit Mono", monospace;
+    font-optical-sizing: auto;
+    font-style: normal;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+* button {
+    cursor: pointer;
+}
+
+body {
+    display: flex;
+    height: 100vh;
+}
+/* Sidebar Stuff */
+.sidebar {
+    padding: .5rem;
+    height: auto;
+    width: 210px;
+    max-width: 420px;
+    min-width: 210px;
+    flex-shrink: 0;
+    background-color: var(--sidebarColorLight);
+    box-shadow: 8px -2px 23px -6px rgba(145,135,103,0.75);
+-webkit-box-shadow: 8px -2px 23px -6px rgba(145,135,103,0.75);
+-moz-box-shadow: 8px -2px 23px -6px rgba(145,135,103,0.75);
+}
+
+.sidebar .name{
+    display: flex;
+    width: auto;
+    align-items: center;
+    justify-content: start;
+}
+
+.sidebar .name-name {
+    font-size: 1.8rem;
+}
+
+.sidebar .name .name-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-image: url('../assets/user6.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin: 8px;
+}
+
+.sidebar .name-notification-icon {
+    padding-left: 50px;
+    
+}
+
+nav {
+padding: .5rem;
+display: flex;
+flex-direction: column;
+}
+
+.nav-line {
+    width: 90%;
+    height: 1px;
+    background-color: grey;
+    margin-top: 3px;
+    margin-bottom: 12px;
+}
+
+nav {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: flex-start;
+    margin-bottom: 1rem;
+}
+
+nav button {
+    background-color: transparent;
+    border-style: none;
+    font-size: 1.1rem;
+    margin-top: 12px;
+    margin-bottom: 12px;
+    width: 100%;
+}
+
+nav button:hover {
+    border-bottom: solid red 1px;
+}
+
+nav .active {
+    border-radius: 8px;
+    background-color: var(--highlightColor);
+}
+
+/* Main Content  */
+main{
+    margin: 1rem;
+    background-color: #fff;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.main-line {
+    width: 100%;
+    height: 1px;
+    background-color: #e5e5e5;;
+    margin-top: 12px;
+    margin-bottom: 12px;
+}
+
+/* Task Styling  */
+
+.tasks-container {
+    width:80%;
+}
+
+.task {
+    width: 100%;
+    display: grid;
+    grid-template-columns:4fr 1fr ;
+}
+
+.task .title-box {
+    padding: 6px;
+}
+
+span.priority {
+    font-size: 11px;
+    background-color: var(--highPriority);
+    padding: 6px;
+    border-radius: 8px;
+}
+span.High {
+    background-color: var(--highPriority); 
+}
+span.Regular {
+    background-color: var(--regularPriority);
+}
+span.Low {
+    background-color: var(--lowPriority);
+}
+
+.task .description-box {
+    padding-left: 30px;
+    font-size: .9rem;
+    color: var(--lightTextColor);
+}
+
+.edit-pane {
+    display: flex;
+    flex-direction: column;
+}
+.edit-pane button {
+    cursor: pointer;
+    background-color: transparent;
+    border-style: none;
+    color: var(--lightTextColor);
+}
+.edit-pane button:hover {
+    color: var(--addButtonText);
+}
+
+.date {
+    color: #dc4c3e;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+
+.task-pane .title-box label {
+    font-size: 1.2rem;
+}
+
+/* Dialog container Stuff */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+.task-form-container {
+    background-color: var(--sidebarColorLight);
+    display: flex;
+    width: 60%;
+    padding: 1rem;
+    border-radius: 12px;
+    justify-content: center;
+}
+.task-form-container form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    
+}
+.task-form-container form input, .task-form-container form button {
+margin: 8px;
+padding: 6px;
+}
+
+.no-tasks{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+    text-align: center;
+}
+
+
+/* Project Stuff */
+.project-container {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+}
+.project-info-container {
+    width: 100%;
+    margin-top: 60px;
+}
+
+.project-info-container input{
+    width: 100%;
+    border-style: none;
+    font-size: 2rem;
+    font-weight: bold;
+    
+    
+}
+
+.project-title-container input:focus{
+    outline: none;
+}
+
+.project-title-container{
+    display: flex;
+    padding: 8px;
+}
+
+.project-title-container button {
+    border-style: none;
+    background-color: transparent;
+    color: var(--lightTextColor);
+}
+
+.project-title-container button:hover{
+    color: var(--addButtonText);
+}
+
+.project-title-container:hover{
+    border: solid var(--lightTextColor) 1px;
+    border-radius: 8px;
+}
+
+
+.project-info-container textarea {
+    width: 100%;
+    border-style: none;
+    padding: 8px;
+}
+
+.project-info-container textarea:hover {
+    border-style: solid;
+    border-radius: 8px;
+
+}
+
+.add-project-task {
+    border-style: none;
+    background-color: transparent;
+    color: var(--lightTextColor)
+}
+
+.add-project-task span{
+    color: var(--addButtonText);
+    font-size: 1.5rem;
+    font-weight: light;
+}
+
+.add-project-task:hover {
+    border-bottom: solid var(--addButtonText) 1px;
+}
+
+/* Delete dialog box */
+#deleteConfirm{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 12px;
+    border-radius: 12px;
+    background-color: var(--sidebarColorLight);
+    border: none;
+    box-shadow: 10px 4px 17px -1px rgba(0,0,0,0.56);
+    -webkit-box-shadow: 10px 4px 17px -1px rgba(0,0,0,0.56);
+    -moz-box-shadow: 10px 4px 17px -1px rgba(0,0,0,0.56);
+}
+#deleteConfirm .deleteMessage{
+    padding: 6px;
+    color: var(--addButtonText);
+}
+#deleteConfirm .deleteConfirmButtons button{
+    padding: 4px;
+    font-size: .7rem;
+    width: 32px;
+}
