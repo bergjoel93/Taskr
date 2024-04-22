@@ -23,8 +23,9 @@ function handleAddTaskForm(projectId = 1, taskId = null) {
         event.preventDefault();
         console.log("submit has been pressed");
         // get new task info
-        const dateString = form.querySelector("#date").value;
+        const dateString = document.querySelector("#date").value; // '2024-04-12T08:00'
         const date = new Date(dateString);
+
 
         const newTask = {
             title: form.querySelector('#title').value,

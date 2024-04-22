@@ -1,12 +1,10 @@
 Things to finish: 
-
-* After clicking submit on edit task form , it needs to close out task form. 
-* complete logic for upading a task once the edit form has been submitted. in handleAddTaskForm
-* Complete Add Project Button
-* complete nav handlers for generated project buttons
-* complete printing the generated projects in navbar. 
+* Add a header to html document
+* style the edit and trash buttons to only show when hovering over element. 
+* add class to overdue tasks so that they have some nice styling that they're overdue. Highlight date. 
 * complete completed task logic
 * print completed tasks below incomplete task
 * add headers "Today", "All Tasks", "Complete"
-* Print Project Page from handlePage. 
+* figure out how to publish to pages. 
+* Above and beyond: make notification button work. If it's clicked, it will show overdue items. 
 

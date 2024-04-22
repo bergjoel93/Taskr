@@ -130,8 +130,8 @@ main{
 
 /* Task Styling  */
 
-.tasks-container {
-    width:80%;
+.tasks{
+    width: 90%;
 }
 
 .task {
@@ -202,7 +202,8 @@ span.Low {
     display: flex;
     justify-content: center;
     align-items: center;
-  }
+}
+
 
 .task-form-container {
     background-color: var(--sidebarColorLight);

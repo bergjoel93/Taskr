@@ -17,7 +17,7 @@ class HandleNavbar {
         // Add Task Button
         const addTaskBtn = document.querySelector('.addTaskBtn');
         addTaskBtn.addEventListener('click', ()=>{
-            this.addActive('.addTaskBtn');
+            this.makeActive(addTaskBtn);
             console.log('Add Task Button Clicked');
             renderNewAddTaskForm();
 
@@ -27,7 +27,7 @@ class HandleNavbar {
         // All Tasks Button
         const allTasksBtn = document.querySelector('.allTasksBtn');
         allTasksBtn.addEventListener('click', ()=>{
-            this.addActive('.allTasksBtn');
+            this.makeActive(allTasksBtn);
             const pageRenderer = new RenderPage(1);
             pageRenderer.renderPage('all');
             console.log('All Tasks Button Clicked');
@@ -36,7 +36,7 @@ class HandleNavbar {
         // Today Button
         const todayBtn = document.querySelector('.todayBtn');
         todayBtn.addEventListener('click', ()=>{
-            this.addActive('.todayBtn');
+            this.makeActive(todayBtn);
             const pageRenderer = new RenderPage(1);
             pageRenderer.renderPage('today');
 
@@ -45,7 +45,7 @@ class HandleNavbar {
         // Add Project Btn
         const addProjectBtn = document.querySelector('.addProjectBtn');
         addProjectBtn.addEventListener('click', ()=>{
-            this.addActive('.addProjectBtn');
+            this.makeActive(addProjectBtn);
             console.log("Add Project button Clicked.");
             // If this button is clicked, first we create a new project and add it to the project manager. Then we render a new project page with the default stuff filled out. Then we add our handler stuff. 
 
@@ -68,6 +68,7 @@ class HandleNavbar {
             projectBtns.forEach(projectBtn =>{
                 const projectId = Number(projectBtn.getAttribute('data-id'));
                 projectBtn.addEventListener('click', ()=>{
+                    this.makeActive(projectBtn);
                     console.log("ProjectId: "+projectId+'clicked');
                     const renderPage = new RenderPage(projectId);
                     //render navbar
@@ -77,9 +78,9 @@ class HandleNavbar {
         }
     }
 
-    addActive(className) {
+    makeActive(button) {
         this.removeActive();
-        document.querySelector(className).classList.add("active");
+        button.classList.add('active');
     }
 
     removeActive(){

@@ -7,7 +7,7 @@ function createTask(task){
     const id = task.id;
     const title = task.title;
     const description = task.description;
-    const dueDate = format(new Date(task.date), 'EEE MMM do yyyy');
+    const dueDate = format(new Date(task.date), 'PPPp'); // Example: "April 12, 2024, 8:30 PM"
     const priority = task.priority;
     const complete = task.complete;
 
