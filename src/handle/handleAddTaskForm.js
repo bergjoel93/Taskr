@@ -1,6 +1,7 @@
 import { closeTaskForm } from "../render/renderAddTaskForm";
 import projectManager from "../manage/ProjectManager";
 import RenderPage from "../render/renderPage";
+import { parseISO } from "date-fns";
 /**
  * Responsible for handling user input from a new task form. Accepts a projectId and taskId. If no paramaters are input, then the new task will be added to default task list in default Project 0. 
  * @param {Integer} projectId - id of project
@@ -21,30 +22,30 @@ function handleAddTaskForm(projectId = 1, taskId = null) {
     submitBtn.addEventListener('click', (event) => {
         event.preventDefault();
         console.log("submit has been pressed");
-        // Check if there's a taskId. If there is, then we're editing an existing task and not creating a new one. 
-        if(taskId){
-            // TODO add the logic to update a task once the form has been submitted. 
-        }
-        else { // creating a new task. 
-            // Create new task
-            const newTask = {
-                title: form.querySelector('#title').value,
-                description: form.querySelector('#description').value,
-                date: new Date(form.querySelector("#date").value),
-                priority: form.querySelector("#priority").value,
-                complete: false
-            }
-            
-            //Add task to project 
-            projectManager.addTaskToProject(projectId, newTask);
-            // close the form
-            closeTaskForm();
-            // re-render everything 
-            const pageRenderer = new RenderPage(projectId);
-            pageRenderer.renderAllTasks('all');
-            
+        // get new task info
+        const dateString = form.querySelector("#date").value;
+        const date = new Date(dateString);
+
+        const newTask = {
+            title: form.querySelector('#title').value,
+            description: form.querySelector('#description').value,
+            date: date,
+            priority: form.querySelector("#priority").value,
+            complete: false
         }
 
+        if(taskId){ //updating an old task if there's a taskId. 
+            projectManager.updateProjectTask(projectId, taskId, newTask);
+        }
+        else { // creating and adding a new task. 
+            //Add task to project 
+            projectManager.addTaskToProject(projectId, newTask);
+        }
+
+        // close the form
+        closeTaskForm();
+        // re-render everything 
+        const pageRenderer = new RenderPage(projectId);
     });
 }
 

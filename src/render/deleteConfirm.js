@@ -1,6 +1,6 @@
-import { projectManager } from "../app";
-import renderNavProjects from "../project/renderNavProjects";
-import renderTasks from "./renderTasks";
+import projectManager from "../manage/ProjectManager";
+import RenderNavbar from "./renderNavbar";
+import RenderPage from "./renderPage";
 /**
  * Responsible for generating a nifty little dialog box that appears whenever you try to delete something. 
  */
@@ -53,8 +53,11 @@ function handleDeleteConfirm(projectId) {
         projectManager.deleteProject(projectId);
         //close dialog box
         closeDialog();
-        renderTasks();
-        renderNavProjects();
+        
+        const renderPage = new RenderPage(1);
+        renderPage.renderPage();
+        const renderNavbar = new RenderNavbar();
+        renderNavbar.render();
     })
 
     no.addEventListener('click', ()=>{

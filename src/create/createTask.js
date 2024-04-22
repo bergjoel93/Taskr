@@ -1,4 +1,4 @@
-import { formatDueDate } from "../render/dateUtils";
+import { format } from "date-fns";
 /**
  * responsible for creating the single .task element div. 
  */
@@ -7,7 +7,7 @@ function createTask(task){
     const id = task.id;
     const title = task.title;
     const description = task.description;
-    const dueDate = formatDueDate(new Date(task.date));
+    const dueDate = format(new Date(task.date), 'EEE MMM do yyyy');
     const priority = task.priority;
     const complete = task.complete;
 

@@ -5,12 +5,20 @@ import createTask from "./createTask";
  */
 
 function createTasks(tasks){
-    const taskElement = document.createElement('div');
-    taskElement.classList.add('tasks');
-    tasks.forEach(task =>{
-        taskElement.appendChild(createTask(task));
-    })
-    return taskElement;
+    const tasksElement = document.createElement('div');
+    tasksElement.classList.add('tasks');
+    if(!tasks){
+        // if no tasks exist, return empty task element. 
+        return tasksElement;
+    }
+    else{
+        tasks.forEach(task =>{
+            const taskElement = createTask(task);
+        tasksElement.appendChild(taskElement);
+        })
+        return tasksElement;
+    }
+    
 }
 
 

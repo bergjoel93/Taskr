@@ -13,9 +13,14 @@ class ProjectManager {
       this.createProject('Default', 'This is the default project.');
     }
   }
+  
+  // Public method to get the projects array safely
+  getProjects() {
+    return this.projects;
+  }
 
-  createProject(title, description) {
-    const project = new Project(this.#generateProjectId(), title, description);
+  createProject() {
+    const project = new Project(this.#generateProjectId(), "New Project", "");
     this.projects.push(project);
     this.#saveProjects();
     return project;
@@ -59,6 +64,7 @@ class ProjectManager {
     if (project) {
       project.title = newTitle;
       this.#saveProjects();
+      //console.log('Project '+project.title+ "updated");
     }
   }
 

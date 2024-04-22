@@ -11,9 +11,9 @@ function renderEditTaskForm(projectId, task) {
     handleAddTaskForm(projectId, taskId);
 }
 
-function renderNewAddTaskForm(task = null){
-    body.appendChild(createTaskForm(task));
-    handleAddTaskForm();
+function renderNewAddTaskForm(projectId){
+    body.appendChild(createTaskForm());
+    handleAddTaskForm(projectId);
 }
 
 function closeTaskForm(){

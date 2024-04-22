@@ -14,10 +14,11 @@ class RenderNavbar {
     render() {
         //clear and reprint navbar. 
         this.sidebar.innerHTML = ``;
-        this.sidebar.innerHTML = this.createNavbar.getNavbar();
+        const navbarContainer = this.createNavbar.getNavbar();
+        this.sidebar.appendChild(navbarContainer);
         // activate handling
-        const handlNavbar = new HandleNavbar();
-        // add more rendering logic or state updates. 
+        const handleNavbar = new HandleNavbar();
+        
     }
 }
 

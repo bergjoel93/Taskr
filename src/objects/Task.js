@@ -1,7 +1,9 @@
+import { formatISO, parseISO } from "date-fns";
 /**
  * Responsible for defining the structure and functionality of a Task object. 
  * A Task object has:
- *  ID: Integer that is generated when it's pushed into a Project. 
+ 
+*  ID: Integer that is generated when it's pushed into a Project. 
  *  title: string
  *  description: String
  *  dueDate: javascript date
@@ -26,7 +28,7 @@ class Task {
         id: this.id,
         title: this.title,
         description: this.description,
-        date: this.date.toISOString(),
+        date: formatISO(this.date), // convert date to ISO string 
         priority: this.priority,
         complete: this.complete,
       };
@@ -41,7 +43,7 @@ class Task {
         Number(data.id),
         data.title,
         data.description,
-        new Date(data.date),
+        new Date(data.date), // parse ISO string date
         data.priority,
         data.complete
       );

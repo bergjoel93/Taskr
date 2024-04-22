@@ -12,9 +12,9 @@ function createTaskForm(task = null) {
     taskForm.innerHTML = `
         <form id="newTaskForm">
             <h2>${task ? 'Edit Task' : 'Add New Task'}</h2>
-            <input type="text" name="title" id="title" placeholder="Title" required maxlength="20" value="${task ? task.title : ''}">
+            <input type="text" name="title" id="title" placeholder="Title" required maxlength="40" value="${task ? task.title : ''}">
             <input type="text" name="description" id="description" placeholder="Description..." required maxlength="100" value="${task ? task.description : ''}">
-            <input type="datetime-local" id="date" required value="${task ? task.date.toISOString().substring(0, 16) : ''}">
+            <input type="date" id="date" required value="${task ? task.date.toISOString().substring(0, 10) : ''}">
             <div class="priority-container">
                 <label for="priority">Priority Level</label>
                 <select id="priority" required>
