@@ -9,7 +9,7 @@ renderNavbar.render();
 
 // REnder all tasks page by default 
 const renderPage = new RenderPage();
-renderPage.renderPage();
+
 
 
 

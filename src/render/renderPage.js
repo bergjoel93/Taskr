@@ -12,8 +12,9 @@ import { isToday } from "date-fns";
  * @param {*} projectId - default is 0, or you can input what project you want to display. 
  */
 class RenderPage {
-    constructor(projectId = 1){
+    constructor(projectId = 1, filter = 'all'){
         this.projectId = projectId;
+        this.filter = filter
         this.main = document.querySelector('main');
         this.init(); // initializes class by checking if project exists and tasks exist. 
     }
@@ -27,47 +28,69 @@ class RenderPage {
         }
         else {
             this.tasks = this.project.tasks;
+            this.completeTasks = this.tasks.filter(task => task.complete);
+            this.incompleteTasks = this.tasks.filter(task => !task.complete);
         }
         //initial render based on filter
         this.renderPage()
     }
 
-    renderPage(filter = 'all'){
+    renderPage(){
         // clear innerHTML 
         this.main.innerHTML = '';
         // Rendering All Tasks Page for default project. 
         if(this.projectId == 1) {
-            if(filter == 'all'){
-                this.renderAllTasks();
+            if(this.filter == 'all'){
+                this.main.appendChild(this.renderAllTasks());
+                //setup page handlers
+                const handlePage = new HandlePage(1,this.filter);
+                handlePage.byTask();
             }
-            else if(filter =='today'){
-                this.renderToday()
+            else if(this.filter =='today'){
+                this.main.appendChild(this.renderToday());
+                //setup page handlers
+                const handlePage = new HandlePage(1,this.filter);
+                handlePage.byTask();
             }
             else{
                 console.error(" There was an error ");
             }
-            //setup page handlers
-            const handlePage = new HandlePage(1);
-            handlePage.byTask();
+            
         }
         else {
             this.renderProjectPage();
-            // setup event Handlers. 
-            const handlePage = new HandlePage(this.projectId);
+            // setup page Handlers. 
+            const handlePage = new HandlePage(this.projectId, this.filter);
             handlePage.handlePage();
         }
 
     }
 
     renderToday(){
-        const todayTasks = this.filterTasksByToday(this.tasks);
+        const mainTaskContainer = document.createElement('div');
+        mainTaskContainer.classList.add('main-task-container');
+        const todayTasks = this.filterTasksByToday(this.incompleteTasks);
+        const completeTodayTasks = this.filterTasksByToday(this.completeTasks);
         const taskElement = createTasks(todayTasks);
-        this.main.appendChild(taskElement);
+        const completeTasksElement = this.createCompleteElement(completeTodayTasks);
+        // create header
+        const taskHeader = this.createTaskHeader("Today")
+        mainTaskContainer.appendChild(taskHeader);
+        mainTaskContainer.appendChild(taskElement);
+        mainTaskContainer.appendChild(completeTasksElement);
+        return mainTaskContainer;
     }
 
     renderAllTasks(){
-        const taskElement = createTasks(this.tasks);
-        this.main.appendChild(taskElement);
+        const mainTaskContainer = document.createElement('div');
+        mainTaskContainer.classList.add('main-task-container');
+        const taskHeader = this.createTaskHeader("All Tasks")
+        const taskElement = createTasks(this.incompleteTasks);
+        const completeTasksElement = this.createCompleteElement(this.completeTasks);
+        mainTaskContainer.appendChild(taskHeader);
+        mainTaskContainer.appendChild(taskElement);
+        mainTaskContainer.appendChild(completeTasksElement);
+        return mainTaskContainer;
     }
 
     renderProjectPage() {
@@ -92,46 +115,47 @@ class RenderPage {
         projectContainer.appendChild(projectForm);
         
         // create project-task-list container
-        const projectTaskList = document.createElement('div');
-        projectTaskList.classList.add('project-task-list');
-        projectTaskList.innerHTML = `
-            <h2>Tasks</h2>
-            <div class="main-line"></div>
-            `;
-        const taskContainer = document.createElement('div');
-        taskContainer.classList.add('task-container');
-        // get the tasksElement 
-        const tasksElement = createTasks(this.tasks);
-        taskContainer.appendChild(tasksElement);
-
+        const mainTaskContainer = document.createElement('div');
+        mainTaskContainer.classList.add('main-task-container');
+        
         const addTaskProjectBtn = document.createElement('button');
         addTaskProjectBtn.classList.add('add-project-task');
         addTaskProjectBtn.setAttribute('data-id', `${this.project.id}`);
         addTaskProjectBtn.innerHTML = `<span> + </span>Add Task`;            
-        
-        projectTaskList.appendChild(taskContainer);
-        projectTaskList.appendChild(addTaskProjectBtn);
+
+        mainTaskContainer.appendChild(addTaskProjectBtn);
+        mainTaskContainer.appendChild(this.renderAllTasks());
 
         // append taskContainer to main
-        projectContainer.appendChild(projectTaskList);
+        projectContainer.appendChild(mainTaskContainer);
        // append the projectContainer to main.
        this.main.appendChild(projectContainer);
 
     }
 
+    createCompleteElement(completeTasks){
+       const completeTasksElement = document.createElement('div');
+       completeTasksElement.classList.add('complete-tasks');
+       if(completeTasks.length > 0){// if there are complete tasks
+            //create header
+            const completeTasksHeader = this.createTaskHeader('Complete');
+            const completeTasks = createTasks(this.completeTasks);
+            // create complete task list. 
+            completeTasksElement.appendChild(completeTasksHeader);
+            completeTasksElement.appendChild(completeTasks);
+       }
+       return completeTasksElement;
+    }
+
     filterTasksByToday(tasks) {
         return tasks.filter(task => isToday(new Date(task.date)));
-        // const today = new Date();  // Get the current date and time
-        // const dateToday = today.toISOString().substring(0, 10);  // Format today's date as YYYY-MM-DD
-    
-        // return tasks.filter(task => {
-        //     // Ensure task.date is a Date object
-        //     const taskDate = new Date(task.date);
-        //     const taskDateFormatted = taskDate.toISOString().substring(0, 10);
-            
-        //     // Compare the formatted dates
-        //     return taskDateFormatted === dateToday;
-        // });
+    }
+
+    createTaskHeader(headerName){
+        const taskHeader = document.createElement('div');
+        taskHeader.classList.add('task-header');
+        taskHeader.innerHTML = `<h2>${headerName}</h2><div class="main-line"></div>`;
+        return taskHeader;
     }
 
 

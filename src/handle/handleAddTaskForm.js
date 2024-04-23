@@ -9,7 +9,7 @@ import { parseISO } from "date-fns";
  */
 
 
-function handleAddTaskForm(projectId = 1, taskId = null) {
+function handleAddTaskForm(projectId = 1, taskId = null, filter = 'all') {
     const form = document.querySelector('#newTaskForm');
     const submitBtn = form.querySelector('#submit');
     const cancelButton = form.querySelector('#cancel');
@@ -46,7 +46,7 @@ function handleAddTaskForm(projectId = 1, taskId = null) {
         // close the form
         closeTaskForm();
         // re-render everything 
-        const pageRenderer = new RenderPage(projectId);
+        const pageRenderer = new RenderPage(projectId, filter);
     });
 }
 

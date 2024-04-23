@@ -6,7 +6,7 @@
   "scripts": {
     "build": "webpack",
     "dev": "webpack serve",
-    "deployGit":"git subtree push --prefix dist origin gh-pages"
+    "deployGit": "git subtree push --prefix dist origin gh-pages"
   },
   "keywords": [],
   "author": "",

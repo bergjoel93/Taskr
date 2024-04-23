@@ -13,7 +13,8 @@ class CreateNavbar {
         const navbarContainer = document.createElement('div');
         navbarContainer.classList.add('navbar-container');
         navbarContainer.innerHTML = `
-            <div class="name">
+        <div class="sidebar-title">Taskr</div>  
+        <div class="name">
                 <div class="name-icon"></div>
                 <div class="name-name">${this.userName}</div>
                 <div class="name-notification-icon"><span class="material-symbols-outlined">

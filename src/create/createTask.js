@@ -14,7 +14,7 @@ function createTask(task){
     const taskElement = document.createElement('div');
     taskElement.classList.add('task');
     taskElement.innerHTML = `
-        <div class="task-pane">
+        <div class="task-pane" data-id="${id}">
             <div class="title-box">
                 <input type="checkbox" class="completed" data-id="${id}" ${complete ? 'checked' : ''} >
                 <label for="${id}">${title} <span class="priority ${priority}">${priority}</span></label>
@@ -24,7 +24,7 @@ function createTask(task){
             calendar_month
             </span>${dueDate}</div>
         </div>
-        <div class="edit-pane">
+        <div class="edit-pane" id="edit-pane-${id}">
                 <button class="edit" data-id="${id}"><span class="material-symbols-outlined">
                     edit_note
                     </span></button>

@@ -85,6 +85,28 @@ class ProjectManager {
     }
   }
 
+  /**
+ * Updates the completion status of a specific task within a project.
+ * @param {number} projectId - The ID of the project containing the task.
+ * @param {number} taskId - The ID of the task to update.
+ * @param {boolean} complete - The new completion status of the task.
+ */
+updateTaskComplete(projectId, taskId, complete) {
+  const project = this.getProjectById(projectId);
+  if (project) {
+      const task = project.tasks.find(t => t.id === taskId);
+      if (task) {
+          task.complete = complete;  // Update the complete status
+          this.#saveProjects();  // Persist the change
+      } else {
+          console.error(`Task with ID ${taskId} not found in project with ID ${projectId}`);
+      }
+  } else {
+      console.error(`Project with ID ${projectId} not found.`);
+  }
+}
+
+
   addTaskToProject(projectId, task) {
     const project = this.getProjectById(projectId);
     if (project) {
@@ -108,6 +130,7 @@ class ProjectManager {
     this.projects = this.projects.filter(project => project.id !== id);
     this.#saveProjects();
   }
+
 
   // Private method to sort tasks by date within a project
   #sortTasksByDate(projectId) {

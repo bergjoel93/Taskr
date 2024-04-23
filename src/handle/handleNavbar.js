@@ -28,18 +28,14 @@ class HandleNavbar {
         const allTasksBtn = document.querySelector('.allTasksBtn');
         allTasksBtn.addEventListener('click', ()=>{
             this.makeActive(allTasksBtn);
-            const pageRenderer = new RenderPage(1);
-            pageRenderer.renderPage('all');
-            console.log('All Tasks Button Clicked');
+            const pageRenderer = new RenderPage(1, 'all');
         });
 
         // Today Button
         const todayBtn = document.querySelector('.todayBtn');
         todayBtn.addEventListener('click', ()=>{
             this.makeActive(todayBtn);
-            const pageRenderer = new RenderPage(1);
-            pageRenderer.renderPage('today');
-
+            const pageRenderer = new RenderPage(1, 'today');
         });
 
         // Add Project Btn
@@ -55,7 +51,7 @@ class HandleNavbar {
             console.log("New project created with ID: "+ newProjectId);
 
             // render the page with project ID
-            const renderProjectPage = new RenderPage(newProjectId);
+            const renderProjectPage = new RenderPage(newProjectId, 'all');
             // render the navbar
             const renderNavbar = new RenderNavbar();
             renderNavbar.render();
@@ -70,7 +66,7 @@ class HandleNavbar {
                 projectBtn.addEventListener('click', ()=>{
                     this.makeActive(projectBtn);
                     console.log("ProjectId: "+projectId+'clicked');
-                    const renderPage = new RenderPage(projectId);
+                    const renderPage = new RenderPage(projectId, 'all');
                     //render navbar
                 });
                 
