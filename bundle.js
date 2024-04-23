@@ -63,7 +63,7 @@ var CreateNavbar = /*#__PURE__*/function () {
     value: function getNavbar() {
       var navbarContainer = document.createElement('div');
       navbarContainer.classList.add('navbar-container');
-      navbarContainer.innerHTML = "\n            <div class=\"name\">\n                <div class=\"name-icon\"></div>\n                <div class=\"name-name\">".concat(this.userName, "</div>\n                <div class=\"name-notification-icon\"><span class=\"material-symbols-outlined\">\n                    notifications\n                    </span></div>\n            </div>\n        ");
+      navbarContainer.innerHTML = "\n        <div class=\"sidebar-title\">Taskr</div>  \n        <div class=\"name\">\n                <div class=\"name-icon\"></div>\n                <div class=\"name-name\">".concat(this.userName, "</div>\n                <div class=\"name-notification-icon\"><span class=\"material-symbols-outlined\">\n                    notifications\n                    </span></div>\n            </div>\n        ");
       var nav = document.createElement('nav');
       nav.innerHTML = "\n                <h3>My Tasks</h3>\n                <div class=\"nav-line\"></div>\n                <button class=\"addTaskBtn\">\n                    <span class=\"material-symbols-outlined\">\n                        add_circle\n                        </span>\n                    Add Task\n                </button>\n                <button class=\"todayBtn\">Today</button>\n                <button class=\"allTasksBtn active\">All Tasks</button>\n\n                <h3>My Projects</h3>\n                <div class=\"nav-line\"></div>\n\n                <button class=\"addProjectBtn\">\n                    <span class=\"material-symbols-outlined\">\n                        add_circle\n                        </span>\n                    Add Project\n                </button>\n\n            ";
       var navProjectContainer = document.createElement('div');
@@ -121,7 +121,7 @@ function createTask(task) {
   var complete = task.complete;
   var taskElement = document.createElement('div');
   taskElement.classList.add('task');
-  taskElement.innerHTML = "\n        <div class=\"task-pane\">\n            <div class=\"title-box\">\n                <input type=\"checkbox\" class=\"completed\" data-id=\"".concat(id, "\" ").concat(complete ? 'checked' : '', " >\n                <label for=\"").concat(id, "\">").concat(title, " <span class=\"priority ").concat(priority, "\">").concat(priority, "</span></label>\n            </div>\n            <div class=\"description-box\">").concat(description, "</div>\n            <div class=\"date\"><span class=\"material-symbols-outlined\">\n            calendar_month\n            </span>").concat(dueDate, "</div>\n        </div>\n        <div class=\"edit-pane\">\n                <button class=\"edit\" data-id=\"").concat(id, "\"><span class=\"material-symbols-outlined\">\n                    edit_note\n                    </span></button>\n                <button class=\"delete\" data-id=\"").concat(id, "\"><span class=\"material-symbols-outlined\">\n                    delete\n                    </span></button>\n        </div>    \n            ");
+  taskElement.innerHTML = "\n        <div class=\"task-pane\" data-id=\"".concat(id, "\">\n            <div class=\"title-box\">\n                <input type=\"checkbox\" class=\"completed\" data-id=\"").concat(id, "\" ").concat(complete ? 'checked' : '', " >\n                <label for=\"").concat(id, "\">").concat(title, " <span class=\"priority ").concat(priority, "\">").concat(priority, "</span></label>\n            </div>\n            <div class=\"description-box\">").concat(description, "</div>\n            <div class=\"date\"><span class=\"material-symbols-outlined\">\n            calendar_month\n            </span>").concat(dueDate, "</div>\n        </div>\n        <div class=\"edit-pane\" id=\"edit-pane-").concat(id, "\">\n                <button class=\"edit\" data-id=\"").concat(id, "\"><span class=\"material-symbols-outlined\">\n                    edit_note\n                    </span></button>\n                <button class=\"delete\" data-id=\"").concat(id, "\"><span class=\"material-symbols-outlined\">\n                    delete\n                    </span></button>\n        </div>    \n            ");
   var mainLine = document.createElement('div');
   mainLine.classList.add('main-line');
   taskElement.appendChild(mainLine);
@@ -192,6 +192,7 @@ __webpack_require__.r(__webpack_exports__);
 function handleAddTaskForm() {
   var projectId = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
   var taskId = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+  var filter = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'all';
   var form = document.querySelector('#newTaskForm');
   var submitBtn = form.querySelector('#submit');
   var cancelButton = form.querySelector('#cancel');
@@ -223,7 +224,7 @@ function handleAddTaskForm() {
     // close the form
     (0,_render_renderAddTaskForm__WEBPACK_IMPORTED_MODULE_0__.closeTaskForm)();
     // re-render everything 
-    var pageRenderer = new _render_renderPage__WEBPACK_IMPORTED_MODULE_2__["default"](projectId);
+    var pageRenderer = new _render_renderPage__WEBPACK_IMPORTED_MODULE_2__["default"](projectId, filter);
   });
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (handleAddTaskForm);
@@ -283,17 +284,14 @@ var HandleNavbar = /*#__PURE__*/function () {
       var allTasksBtn = document.querySelector('.allTasksBtn');
       allTasksBtn.addEventListener('click', function () {
         _this.makeActive(allTasksBtn);
-        var pageRenderer = new _render_renderPage__WEBPACK_IMPORTED_MODULE_3__["default"](1);
-        pageRenderer.renderPage('all');
-        console.log('All Tasks Button Clicked');
+        var pageRenderer = new _render_renderPage__WEBPACK_IMPORTED_MODULE_3__["default"](1, 'all');
       });
 
       // Today Button
       var todayBtn = document.querySelector('.todayBtn');
       todayBtn.addEventListener('click', function () {
         _this.makeActive(todayBtn);
-        var pageRenderer = new _render_renderPage__WEBPACK_IMPORTED_MODULE_3__["default"](1);
-        pageRenderer.renderPage('today');
+        var pageRenderer = new _render_renderPage__WEBPACK_IMPORTED_MODULE_3__["default"](1, 'today');
       });
 
       // Add Project Btn
@@ -309,7 +307,7 @@ var HandleNavbar = /*#__PURE__*/function () {
         console.log("New project created with ID: " + newProjectId);
 
         // render the page with project ID
-        var renderProjectPage = new _render_renderPage__WEBPACK_IMPORTED_MODULE_3__["default"](newProjectId);
+        var renderProjectPage = new _render_renderPage__WEBPACK_IMPORTED_MODULE_3__["default"](newProjectId, 'all');
         // render the navbar
         var renderNavbar = new _render_renderNavbar__WEBPACK_IMPORTED_MODULE_4__["default"]();
         renderNavbar.render();
@@ -324,7 +322,7 @@ var HandleNavbar = /*#__PURE__*/function () {
           projectBtn.addEventListener('click', function () {
             _this.makeActive(projectBtn);
             console.log("ProjectId: " + projectId + 'clicked');
-            var renderPage = new _render_renderPage__WEBPACK_IMPORTED_MODULE_3__["default"](projectId);
+            var renderPage = new _render_renderPage__WEBPACK_IMPORTED_MODULE_3__["default"](projectId, 'all');
             //render navbar
           });
         });
@@ -378,8 +376,10 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
 
 var HandlePage = /*#__PURE__*/function () {
   function HandlePage(projectId) {
+    var filter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'all';
     _classCallCheck(this, HandlePage);
     this.projectId = projectId; // project Id is a number
+    this.filter = filter;
     this.project = _manage_ProjectManager__WEBPACK_IMPORTED_MODULE_0__["default"].getProjectById(this.projectId);
     this.tasks = this.project.tasks;
   }
@@ -392,7 +392,7 @@ var HandlePage = /*#__PURE__*/function () {
         this.byTask();
       } else {
         // setup project edit handler stuff. 
-        this.byTask();
+
         var titleInput = document.querySelector('#projectTitle');
         var titleContainer = document.querySelector(".project-title-container"); // add the border effect when textinput is in focus. 
 
@@ -403,7 +403,7 @@ var HandlePage = /*#__PURE__*/function () {
 
         // once user clicks out of focus from title input, then the page will re-render. 
         titleInput.addEventListener('blur', function () {
-          var renderPage = new _render_renderPage__WEBPACK_IMPORTED_MODULE_1__["default"](_this.projectId);
+          var renderPage = new _render_renderPage__WEBPACK_IMPORTED_MODULE_1__["default"](_this.projectId, _this.filter);
           renderPage.renderPage();
           var renderNavBar = new _render_renderNavbar__WEBPACK_IMPORTED_MODULE_4__["default"]();
           renderNavBar.render();
@@ -428,7 +428,7 @@ var HandlePage = /*#__PURE__*/function () {
 
         // when user clicks out of description the page will refresh. 
         descriptionInput.addEventListener('blur', function () {
-          var renderPage = new _render_renderPage__WEBPACK_IMPORTED_MODULE_1__["default"](_this.projectId);
+          var renderPage = new _render_renderPage__WEBPACK_IMPORTED_MODULE_1__["default"](_this.projectId, _this.filter);
           renderPage.renderPage();
           var renderNavBar = new _render_renderNavbar__WEBPACK_IMPORTED_MODULE_4__["default"]();
           renderNavBar.render();
@@ -445,6 +445,7 @@ var HandlePage = /*#__PURE__*/function () {
         addTaskBtn.addEventListener('click', function () {
           (0,_render_renderAddTaskForm__WEBPACK_IMPORTED_MODULE_2__.renderNewAddTaskForm)(_this.projectId);
         });
+        this.byTask();
       }
     }
   }, {
@@ -457,6 +458,8 @@ var HandlePage = /*#__PURE__*/function () {
         var deleteBtns = document.querySelectorAll('.delete');
         // get all edit buttons
         var editBtns = document.querySelectorAll('.edit');
+        // get all complete checkboxes
+        var completeBtns = document.querySelectorAll('.completed');
 
         // setup handlers for all of the delete buttons
         deleteBtns.forEach(function (deleteBtn) {
@@ -465,8 +468,7 @@ var HandlePage = /*#__PURE__*/function () {
             var taskId = Number(deleteBtn.getAttribute('data-id'));
             _manage_ProjectManager__WEBPACK_IMPORTED_MODULE_0__["default"].deleteTaskFromProject(_this2.projectId, taskId);
             // re render page. 
-            var renderPage = new _render_renderPage__WEBPACK_IMPORTED_MODULE_1__["default"]();
-            renderPage.renderPage();
+            var renderPage = new _render_renderPage__WEBPACK_IMPORTED_MODULE_1__["default"](_this2.projectId, _this2.filter);
           });
         });
 
@@ -479,6 +481,42 @@ var HandlePage = /*#__PURE__*/function () {
             var task = _manage_ProjectManager__WEBPACK_IMPORTED_MODULE_0__["default"].getTaskFromProject(_this2.projectId, taskId);
             //console.log(task);
             (0,_render_renderAddTaskForm__WEBPACK_IMPORTED_MODULE_2__.renderEditTaskForm)(_this2.projectId, task);
+          });
+        });
+
+        // setup handlers for all checkboxes 
+        completeBtns.forEach(function (completeBtn) {
+          completeBtn.addEventListener('change', function () {
+            // get the task id
+            var taskId = Number(completeBtn.getAttribute('data-id'));
+            // update the task complete property
+            if (completeBtn.checked) {
+              // if the task is complete it will update to true. 
+              _manage_ProjectManager__WEBPACK_IMPORTED_MODULE_0__["default"].updateTaskComplete(_this2.projectId, taskId, true);
+            } else {
+              _manage_ProjectManager__WEBPACK_IMPORTED_MODULE_0__["default"].updateTaskComplete(_this2.projectId, taskId, false);
+            }
+            // re-render page
+            var renderPage = new _render_renderPage__WEBPACK_IMPORTED_MODULE_1__["default"](_this2.projectId, _this2.filter);
+          });
+        });
+
+        // make a hovering event handler that shows the edit pane when user hovers over task. 
+        var taskPanes = document.querySelectorAll('.task-pane');
+        taskPanes.forEach(function (taskPane) {
+          taskPane.addEventListener('mouseenter', function () {
+            var id = taskPane.getAttribute('data-id');
+            // get edit-pane id
+            var editPaneId = "#edit-pane-".concat(id);
+            var editPane = document.querySelector(editPaneId);
+            editPane.style.visibility = 'visible';
+          });
+          taskPane.addEventListener('mouseleave', function () {
+            var id = taskPane.getAttribute('data-id');
+            // get edit-pane id
+            var editPaneId = "#edit-pane-".concat(id);
+            var editPane = document.querySelector(editPaneId);
+            editPane.style.visibility = 'hidden';
           });
         });
       } else {
@@ -616,6 +654,31 @@ var ProjectManager = /*#__PURE__*/function () {
         project.updateTask(taskId, updatedTask);
         _assertClassBrand(_ProjectManager_brand, this, _sortTasksByDate).call(this, projectId); // Ensure tasks are sorted after updating
         _assertClassBrand(_ProjectManager_brand, this, _saveProjects).call(this);
+      }
+    }
+
+    /**
+    * Updates the completion status of a specific task within a project.
+    * @param {number} projectId - The ID of the project containing the task.
+    * @param {number} taskId - The ID of the task to update.
+    * @param {boolean} complete - The new completion status of the task.
+    */
+  }, {
+    key: "updateTaskComplete",
+    value: function updateTaskComplete(projectId, taskId, complete) {
+      var project = this.getProjectById(projectId);
+      if (project) {
+        var task = project.tasks.find(function (t) {
+          return t.id === taskId;
+        });
+        if (task) {
+          task.complete = complete; // Update the complete status
+          _assertClassBrand(_ProjectManager_brand, this, _saveProjects).call(this); // Persist the change
+        } else {
+          console.error("Task with ID ".concat(taskId, " not found in project with ID ").concat(projectId));
+        }
+      } else {
+        console.error("Project with ID ".concat(projectId, " not found."));
       }
     }
   }, {
@@ -1040,8 +1103,10 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
 var RenderPage = /*#__PURE__*/function () {
   function RenderPage() {
     var projectId = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+    var filter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'all';
     _classCallCheck(this, RenderPage);
     this.projectId = projectId;
+    this.filter = filter;
     this.main = document.querySelector('main');
     this.init(); // initializes class by checking if project exists and tasks exist. 
   }
@@ -1055,6 +1120,12 @@ var RenderPage = /*#__PURE__*/function () {
         console.error('Project not found!');
       } else {
         this.tasks = this.project.tasks;
+        this.completeTasks = this.tasks.filter(function (task) {
+          return task.complete;
+        });
+        this.incompleteTasks = this.tasks.filter(function (task) {
+          return !task.complete;
+        });
       }
       //initial render based on filter
       this.renderPage();
@@ -1062,40 +1133,58 @@ var RenderPage = /*#__PURE__*/function () {
   }, {
     key: "renderPage",
     value: function renderPage() {
-      var filter = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'all';
       // clear innerHTML 
       this.main.innerHTML = '';
       // Rendering All Tasks Page for default project. 
       if (this.projectId == 1) {
-        if (filter == 'all') {
-          this.renderAllTasks();
-        } else if (filter == 'today') {
-          this.renderToday();
+        if (this.filter == 'all') {
+          this.main.appendChild(this.renderAllTasks());
+          //setup page handlers
+          var handlePage = new _handle_handlePage__WEBPACK_IMPORTED_MODULE_2__["default"](1, this.filter);
+          handlePage.byTask();
+        } else if (this.filter == 'today') {
+          this.main.appendChild(this.renderToday());
+          //setup page handlers
+          var _handlePage = new _handle_handlePage__WEBPACK_IMPORTED_MODULE_2__["default"](1, this.filter);
+          _handlePage.byTask();
         } else {
           console.error(" There was an error ");
         }
-        //setup page handlers
-        var handlePage = new _handle_handlePage__WEBPACK_IMPORTED_MODULE_2__["default"](1);
-        handlePage.byTask();
       } else {
         this.renderProjectPage();
-        // setup event Handlers. 
-        var _handlePage = new _handle_handlePage__WEBPACK_IMPORTED_MODULE_2__["default"](this.projectId);
-        _handlePage.handlePage();
+        // setup page Handlers. 
+        var _handlePage2 = new _handle_handlePage__WEBPACK_IMPORTED_MODULE_2__["default"](this.projectId, this.filter);
+        _handlePage2.handlePage();
       }
     }
   }, {
     key: "renderToday",
     value: function renderToday() {
-      var todayTasks = this.filterTasksByToday(this.tasks);
+      var mainTaskContainer = document.createElement('div');
+      mainTaskContainer.classList.add('main-task-container');
+      var todayTasks = this.filterTasksByToday(this.incompleteTasks);
+      var completeTodayTasks = this.filterTasksByToday(this.completeTasks);
       var taskElement = (0,_create_createTasks__WEBPACK_IMPORTED_MODULE_0__["default"])(todayTasks);
-      this.main.appendChild(taskElement);
+      var completeTasksElement = this.createCompleteElement(completeTodayTasks);
+      // create header
+      var taskHeader = this.createTaskHeader("Today");
+      mainTaskContainer.appendChild(taskHeader);
+      mainTaskContainer.appendChild(taskElement);
+      mainTaskContainer.appendChild(completeTasksElement);
+      return mainTaskContainer;
     }
   }, {
     key: "renderAllTasks",
     value: function renderAllTasks() {
-      var taskElement = (0,_create_createTasks__WEBPACK_IMPORTED_MODULE_0__["default"])(this.tasks);
-      this.main.appendChild(taskElement);
+      var mainTaskContainer = document.createElement('div');
+      mainTaskContainer.classList.add('main-task-container');
+      var taskHeader = this.createTaskHeader("All Tasks");
+      var taskElement = (0,_create_createTasks__WEBPACK_IMPORTED_MODULE_0__["default"])(this.incompleteTasks);
+      var completeTasksElement = this.createCompleteElement(this.completeTasks);
+      mainTaskContainer.appendChild(taskHeader);
+      mainTaskContainer.appendChild(taskElement);
+      mainTaskContainer.appendChild(completeTasksElement);
+      return mainTaskContainer;
     }
   }, {
     key: "renderProjectPage",
@@ -1111,25 +1200,35 @@ var RenderPage = /*#__PURE__*/function () {
       projectContainer.appendChild(projectForm);
 
       // create project-task-list container
-      var projectTaskList = document.createElement('div');
-      projectTaskList.classList.add('project-task-list');
-      projectTaskList.innerHTML = "\n            <h2>Tasks</h2>\n            <div class=\"main-line\"></div>\n            ";
-      var taskContainer = document.createElement('div');
-      taskContainer.classList.add('task-container');
-      // get the tasksElement 
-      var tasksElement = (0,_create_createTasks__WEBPACK_IMPORTED_MODULE_0__["default"])(this.tasks);
-      taskContainer.appendChild(tasksElement);
+      var mainTaskContainer = document.createElement('div');
+      mainTaskContainer.classList.add('main-task-container');
       var addTaskProjectBtn = document.createElement('button');
       addTaskProjectBtn.classList.add('add-project-task');
       addTaskProjectBtn.setAttribute('data-id', "".concat(this.project.id));
       addTaskProjectBtn.innerHTML = "<span> + </span>Add Task";
-      projectTaskList.appendChild(taskContainer);
-      projectTaskList.appendChild(addTaskProjectBtn);
+      mainTaskContainer.appendChild(addTaskProjectBtn);
+      mainTaskContainer.appendChild(this.renderAllTasks());
 
       // append taskContainer to main
-      projectContainer.appendChild(projectTaskList);
+      projectContainer.appendChild(mainTaskContainer);
       // append the projectContainer to main.
       this.main.appendChild(projectContainer);
+    }
+  }, {
+    key: "createCompleteElement",
+    value: function createCompleteElement(completeTasks) {
+      var completeTasksElement = document.createElement('div');
+      completeTasksElement.classList.add('complete-tasks');
+      if (completeTasks.length > 0) {
+        // if there are complete tasks
+        //create header
+        var completeTasksHeader = this.createTaskHeader('Complete');
+        var _completeTasks = (0,_create_createTasks__WEBPACK_IMPORTED_MODULE_0__["default"])(this.completeTasks);
+        // create complete task list. 
+        completeTasksElement.appendChild(completeTasksHeader);
+        completeTasksElement.appendChild(_completeTasks);
+      }
+      return completeTasksElement;
     }
   }, {
     key: "filterTasksByToday",
@@ -1137,17 +1236,14 @@ var RenderPage = /*#__PURE__*/function () {
       return tasks.filter(function (task) {
         return (0,date_fns__WEBPACK_IMPORTED_MODULE_3__.isToday)(new Date(task.date));
       });
-      // const today = new Date();  // Get the current date and time
-      // const dateToday = today.toISOString().substring(0, 10);  // Format today's date as YYYY-MM-DD
-
-      // return tasks.filter(task => {
-      //     // Ensure task.date is a Date object
-      //     const taskDate = new Date(task.date);
-      //     const taskDateFormatted = taskDate.toISOString().substring(0, 10);
-
-      //     // Compare the formatted dates
-      //     return taskDateFormatted === dateToday;
-      // });
+    }
+  }, {
+    key: "createTaskHeader",
+    value: function createTaskHeader(headerName) {
+      var taskHeader = document.createElement('div');
+      taskHeader.classList.add('task-header');
+      taskHeader.innerHTML = "<h2>".concat(headerName, "</h2><div class=\"main-line\"></div>");
+      return taskHeader;
     }
   }]);
 }();
@@ -1217,7 +1313,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_URL_IMPORT_0___ = new URL(/* asset import */ __webpack_require__(/*! ../assets/user6.png */ "./src/assets/user6.png"), __webpack_require__.b);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
-___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css2?family=Reddit+Mono:wght@200..900&display=swap);"]);
+___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css2?family=Jersey+10&family=Reddit+Mono:wght@200..900&display=swap);"]);
 var ___CSS_LOADER_URL_REPLACEMENT_0___ = _node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_2___default()(___CSS_LOADER_URL_IMPORT_0___);
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, `:root {
@@ -1248,6 +1344,7 @@ body {
 }
 /* Sidebar Stuff */
 .sidebar {
+    display:flex;
     padding: .5rem;
     height: auto;
     width: 210px;
@@ -1258,6 +1355,14 @@ body {
     box-shadow: 8px -2px 23px -6px rgba(145,135,103,0.75);
 -webkit-box-shadow: 8px -2px 23px -6px rgba(145,135,103,0.75);
 -moz-box-shadow: 8px -2px 23px -6px rgba(145,135,103,0.75);
+}
+
+.sidebar .sidebar-title {
+    font-family: "Jersey 10", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 3rem;
+    text-align: center;
 }
 
 .sidebar .name{
@@ -1298,6 +1403,7 @@ flex-direction: column;
     background-color: grey;
     margin-top: 3px;
     margin-bottom: 12px;
+    justify-self: center;
 }
 
 nav {
@@ -1337,7 +1443,8 @@ main{
     background-color: #fff;
     width: 100%;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
 }
 
 .main-line {
@@ -1349,8 +1456,16 @@ main{
 }
 
 /* Task Styling  */
+.task-header {
+    width: 100%;
+}
 
-.tasks{
+.task-header h2{
+    text-align: center;
+    font-size: 2rem;
+}
+
+.tasks, .complete-tasks{
     width: 90%;
 }
 
@@ -1363,6 +1478,7 @@ main{
 .task .title-box {
     padding: 6px;
 }
+
 
 span.priority {
     font-size: 11px;
@@ -1389,7 +1505,9 @@ span.Low {
 .edit-pane {
     display: flex;
     flex-direction: column;
+    visibility: hidden;
 }
+
 .edit-pane button {
     cursor: pointer;
     background-color: transparent;
@@ -1551,7 +1669,7 @@ padding: 6px;
     font-size: .7rem;
     width: 32px;
 }
-`, "",{"version":3,"sources":["webpack://./src/styles/style.css"],"names":[],"mappings":"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","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Reddit+Mono:wght@200..900&display=swap');\n\n:root {\n    --sidebarColorLight: #fffbeb;\n    --addButtonText: #a81f00;\n    --highlightColor: #ffedd5;\n    --profileImg: '../assets/user6.png';\n    --highPriority: #fca5a5;\n    --regularPriority: #bbf7d0;\n    --lowPriority: #93c5fd;\n    --lightTextColor: #6b7280;\n}\n* {\n    font-family: \"Reddit Mono\", monospace;\n    font-optical-sizing: auto;\n    font-style: normal;\n    margin: 0;\n    padding: 0;\n    box-sizing: border-box;\n}\n* button {\n    cursor: pointer;\n}\n\nbody {\n    display: flex;\n    height: 100vh;\n}\n/* Sidebar Stuff */\n.sidebar {\n    padding: .5rem;\n    height: auto;\n    width: 210px;\n    max-width: 420px;\n    min-width: 210px;\n    flex-shrink: 0;\n    background-color: var(--sidebarColorLight);\n    box-shadow: 8px -2px 23px -6px rgba(145,135,103,0.75);\n-webkit-box-shadow: 8px -2px 23px -6px rgba(145,135,103,0.75);\n-moz-box-shadow: 8px -2px 23px -6px rgba(145,135,103,0.75);\n}\n\n.sidebar .name{\n    display: flex;\n    width: auto;\n    align-items: center;\n    justify-content: start;\n}\n\n.sidebar .name-name {\n    font-size: 1.8rem;\n}\n\n.sidebar .name .name-icon {\n    width: 40px;\n    height: 40px;\n    border-radius: 50%;\n    background-image: url('../assets/user6.png');\n    background-size: contain;\n    background-repeat: no-repeat;\n    margin: 8px;\n}\n\n.sidebar .name-notification-icon {\n    padding-left: 50px;\n    \n}\n\nnav {\npadding: .5rem;\ndisplay: flex;\nflex-direction: column;\n}\n\n.nav-line {\n    width: 90%;\n    height: 1px;\n    background-color: grey;\n    margin-top: 3px;\n    margin-bottom: 12px;\n}\n\nnav {\n    display: flex;\n    flex-direction: column;\n    align-items: start;\n    justify-content: flex-start;\n    margin-bottom: 1rem;\n}\n\nnav button {\n    background-color: transparent;\n    border-style: none;\n    font-size: 1.1rem;\n    margin-top: 12px;\n    margin-bottom: 12px;\n    width: 100%;\n}\n\nnav button:hover {\n    border-bottom: solid red 1px;\n}\n\nnav .active {\n    border-radius: 8px;\n    background-color: var(--highlightColor);\n}\n\nnav .nav-project-container{\n    max-height: 200px;\n    overflow-y: auto;\n}\n\n/* Main Content  */\nmain{\n    margin: 1rem;\n    background-color: #fff;\n    width: 100%;\n    display: flex;\n    justify-content: center;\n}\n\n.main-line {\n    width: 100%;\n    height: 1px;\n    background-color: #e5e5e5;;\n    margin-top: 12px;\n    margin-bottom: 12px;\n}\n\n/* Task Styling  */\n\n.tasks{\n    width: 90%;\n}\n\n.task {\n    width: 100%;\n    display: grid;\n    grid-template-columns:4fr 1fr ;\n}\n\n.task .title-box {\n    padding: 6px;\n}\n\nspan.priority {\n    font-size: 11px;\n    background-color: var(--highPriority);\n    padding: 6px;\n    border-radius: 8px;\n}\nspan.High {\n    background-color: var(--highPriority); \n}\nspan.Regular {\n    background-color: var(--regularPriority);\n}\nspan.Low {\n    background-color: var(--lowPriority);\n}\n\n.task .description-box {\n    padding-left: 30px;\n    font-size: .9rem;\n    color: var(--lightTextColor);\n}\n\n.edit-pane {\n    display: flex;\n    flex-direction: column;\n}\n.edit-pane button {\n    cursor: pointer;\n    background-color: transparent;\n    border-style: none;\n    color: var(--lightTextColor);\n}\n.edit-pane button:hover {\n    color: var(--addButtonText);\n}\n\n.date {\n    color: #dc4c3e;\n    display: flex;\n    justify-content: start;\n    align-items: center;\n}\n\n.task-pane .title-box label {\n    font-size: 1.2rem;\n}\n\n/* Dialog container Stuff */\n.overlay {\n    position: fixed;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */\n    display: flex;\n    justify-content: center;\n    align-items: center;\n}\n\n\n.task-form-container {\n    background-color: var(--sidebarColorLight);\n    display: flex;\n    width: 60%;\n    padding: 1rem;\n    border-radius: 12px;\n    justify-content: center;\n}\n.task-form-container form{\n    display: flex;\n    flex-direction: column;\n    justify-content: center;\n    \n}\n.task-form-container form input, .task-form-container form button {\nmargin: 8px;\npadding: 6px;\n}\n\n.no-tasks{\n    width: 100%;\n    height: 100%;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    padding: 24px;\n    text-align: center;\n}\n\n\n/* Project Stuff */\n.project-container {\n    display: flex;\n    flex-direction: column;\n    width: 80%;\n}\n.project-info-container {\n    width: 100%;\n    margin-top: 60px;\n}\n\n.project-info-container input{\n    width: 100%;\n    border-style: none;\n    font-size: 2rem;\n    font-weight: bold;\n    \n    \n}\n\n.project-title-container input:focus{\n    outline: none;\n}\n\n.project-title-container{\n    display: flex;\n    padding: 8px;\n}\n\n.project-title-container button {\n    border-style: none;\n    background-color: transparent;\n    color: var(--lightTextColor);\n}\n\n.project-title-container button:hover{\n    color: var(--addButtonText);\n}\n\n.project-title-container:hover{\n    border: solid var(--lightTextColor) 1px;\n    border-radius: 8px;\n}\n\n\n.project-info-container textarea {\n    width: 100%;\n    border-style: none;\n    padding: 8px;\n}\n\n.project-info-container textarea:hover {\n    border-style: solid;\n    border-radius: 8px;\n\n}\n\n.add-project-task {\n    border-style: none;\n    background-color: transparent;\n    color: var(--lightTextColor)\n}\n\n.add-project-task span{\n    color: var(--addButtonText);\n    font-size: 1.5rem;\n    font-weight: light;\n}\n\n.add-project-task:hover {\n    border-bottom: solid var(--addButtonText) 1px;\n}\n\n/* Delete dialog box */\n#deleteConfirm{\n    display: flex;\n    flex-direction: column;\n    justify-content: center;\n    align-items: center;\n    padding: 12px;\n    border-radius: 12px;\n    background-color: var(--sidebarColorLight);\n    border: none;\n    box-shadow: 10px 4px 17px -1px rgba(0,0,0,0.56);\n    -webkit-box-shadow: 10px 4px 17px -1px rgba(0,0,0,0.56);\n    -moz-box-shadow: 10px 4px 17px -1px rgba(0,0,0,0.56);\n}\n#deleteConfirm .deleteMessage{\n    padding: 6px;\n    color: var(--addButtonText);\n}\n#deleteConfirm .deleteConfirmButtons button{\n    padding: 4px;\n    font-size: .7rem;\n    width: 32px;\n}\n"],"sourceRoot":""}]);
+`, "",{"version":3,"sources":["webpack://./src/styles/style.css"],"names":[],"mappings":"AACA;IACI,4BAA4B;IAC5B,wBAAwB;IACxB,yBAAyB;IACzB,mCAAmC;IACnC,uBAAuB;IACvB,0BAA0B;IAC1B,sBAAsB;IACtB,yBAAyB;AAC7B;AACA;IACI,qCAAqC;IACrC,yBAAyB;IACzB,kBAAkB;IAClB,SAAS;IACT,UAAU;IACV,sBAAsB;AAC1B;AACA;IACI,eAAe;AACnB;;AAEA;IACI,aAAa;IACb,aAAa;AACjB;AACA,kBAAkB;AAClB;IACI,YAAY;IACZ,cAAc;IACd,YAAY;IACZ,YAAY;IACZ,gBAAgB;IAChB,gBAAgB;IAChB,cAAc;IACd,0CAA0C;IAC1C,qDAAqD;AACzD,6DAA6D;AAC7D,0DAA0D;AAC1D;;AAEA;IACI,oCAAoC;IACpC,gBAAgB;IAChB,kBAAkB;IAClB,eAAe;IACf,kBAAkB;AACtB;;AAEA;IACI,aAAa;IACb,WAAW;IACX,mBAAmB;IACnB,sBAAsB;AAC1B;;AAEA;IACI,iBAAiB;AACrB;;AAEA;IACI,WAAW;IACX,YAAY;IACZ,kBAAkB;IAClB,yDAA4C;IAC5C,wBAAwB;IACxB,4BAA4B;IAC5B,WAAW;AACf;;AAEA;IACI,kBAAkB;;AAEtB;;AAEA;AACA,cAAc;AACd,aAAa;AACb,sBAAsB;AACtB;;AAEA;IACI,UAAU;IACV,WAAW;IACX,sBAAsB;IACtB,eAAe;IACf,mBAAmB;IACnB,oBAAoB;AACxB;;AAEA;IACI,aAAa;IACb,sBAAsB;IACtB,kBAAkB;IAClB,2BAA2B;IAC3B,mBAAmB;AACvB;;AAEA;IACI,6BAA6B;IAC7B,kBAAkB;IAClB,iBAAiB;IACjB,gBAAgB;IAChB,mBAAmB;IACnB,WAAW;AACf;;AAEA;IACI,4BAA4B;AAChC;;AAEA;IACI,kBAAkB;IAClB,uCAAuC;AAC3C;;AAEA;IACI,iBAAiB;IACjB,gBAAgB;AACpB;;AAEA,kBAAkB;AAClB;IACI,YAAY;IACZ,sBAAsB;IACtB,WAAW;IACX,aAAa;IACb,sBAAsB;IACtB,mBAAmB;AACvB;;AAEA;IACI,WAAW;IACX,WAAW;IACX,yBAAyB;IACzB,gBAAgB;IAChB,mBAAmB;AACvB;;AAEA,kBAAkB;AAClB;IACI,WAAW;AACf;;AAEA;IACI,kBAAkB;IAClB,eAAe;AACnB;;AAEA;IACI,UAAU;AACd;;AAEA;IACI,WAAW;IACX,aAAa;IACb,8BAA8B;AAClC;;AAEA;IACI,YAAY;AAChB;;;AAGA;IACI,eAAe;IACf,qCAAqC;IACrC,YAAY;IACZ,kBAAkB;AACtB;AACA;IACI,qCAAqC;AACzC;AACA;IACI,wCAAwC;AAC5C;AACA;IACI,oCAAoC;AACxC;;AAEA;IACI,kBAAkB;IAClB,gBAAgB;IAChB,4BAA4B;AAChC;;AAEA;IACI,aAAa;IACb,sBAAsB;IACtB,kBAAkB;AACtB;;AAEA;IACI,eAAe;IACf,6BAA6B;IAC7B,kBAAkB;IAClB,4BAA4B;AAChC;AACA;IACI,2BAA2B;AAC/B;;AAEA;IACI,cAAc;IACd,aAAa;IACb,sBAAsB;IACtB,mBAAmB;AACvB;;AAEA;IACI,iBAAiB;AACrB;;AAEA,2BAA2B;AAC3B;IACI,eAAe;IACf,MAAM;IACN,OAAO;IACP,WAAW;IACX,YAAY;IACZ,8BAA8B,EAAE,6BAA6B;IAC7D,aAAa;IACb,uBAAuB;IACvB,mBAAmB;AACvB;;;AAGA;IACI,0CAA0C;IAC1C,aAAa;IACb,UAAU;IACV,aAAa;IACb,mBAAmB;IACnB,uBAAuB;AAC3B;AACA;IACI,aAAa;IACb,sBAAsB;IACtB,uBAAuB;;AAE3B;AACA;AACA,WAAW;AACX,YAAY;AACZ;;AAEA;IACI,WAAW;IACX,YAAY;IACZ,aAAa;IACb,uBAAuB;IACvB,mBAAmB;IACnB,aAAa;IACb,kBAAkB;AACtB;;;AAGA,kBAAkB;AAClB;IACI,aAAa;IACb,sBAAsB;IACtB,UAAU;AACd;AACA;IACI,WAAW;IACX,gBAAgB;AACpB;;AAEA;IACI,WAAW;IACX,kBAAkB;IAClB,eAAe;IACf,iBAAiB;;;AAGrB;;AAEA;IACI,aAAa;AACjB;;AAEA;IACI,aAAa;IACb,YAAY;AAChB;;AAEA;IACI,kBAAkB;IAClB,6BAA6B;IAC7B,4BAA4B;AAChC;;AAEA;IACI,2BAA2B;AAC/B;;AAEA;IACI,uCAAuC;IACvC,kBAAkB;AACtB;;;AAGA;IACI,WAAW;IACX,kBAAkB;IAClB,YAAY;AAChB;;AAEA;IACI,mBAAmB;IACnB,kBAAkB;;AAEtB;;AAEA;IACI,kBAAkB;IAClB,6BAA6B;IAC7B;AACJ;;AAEA;IACI,2BAA2B;IAC3B,iBAAiB;IACjB,kBAAkB;AACtB;;AAEA;IACI,6CAA6C;AACjD;;AAEA,sBAAsB;AACtB;IACI,aAAa;IACb,sBAAsB;IACtB,uBAAuB;IACvB,mBAAmB;IACnB,aAAa;IACb,mBAAmB;IACnB,0CAA0C;IAC1C,YAAY;IACZ,+CAA+C;IAC/C,uDAAuD;IACvD,oDAAoD;AACxD;AACA;IACI,YAAY;IACZ,2BAA2B;AAC/B;AACA;IACI,YAAY;IACZ,gBAAgB;IAChB,WAAW;AACf","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Jersey+10&family=Reddit+Mono:wght@200..900&display=swap');\n:root {\n    --sidebarColorLight: #fffbeb;\n    --addButtonText: #a81f00;\n    --highlightColor: #ffedd5;\n    --profileImg: '../assets/user6.png';\n    --highPriority: #fca5a5;\n    --regularPriority: #bbf7d0;\n    --lowPriority: #93c5fd;\n    --lightTextColor: #6b7280;\n}\n* {\n    font-family: \"Reddit Mono\", monospace;\n    font-optical-sizing: auto;\n    font-style: normal;\n    margin: 0;\n    padding: 0;\n    box-sizing: border-box;\n}\n* button {\n    cursor: pointer;\n}\n\nbody {\n    display: flex;\n    height: 100vh;\n}\n/* Sidebar Stuff */\n.sidebar {\n    display:flex;\n    padding: .5rem;\n    height: auto;\n    width: 210px;\n    max-width: 420px;\n    min-width: 210px;\n    flex-shrink: 0;\n    background-color: var(--sidebarColorLight);\n    box-shadow: 8px -2px 23px -6px rgba(145,135,103,0.75);\n-webkit-box-shadow: 8px -2px 23px -6px rgba(145,135,103,0.75);\n-moz-box-shadow: 8px -2px 23px -6px rgba(145,135,103,0.75);\n}\n\n.sidebar .sidebar-title {\n    font-family: \"Jersey 10\", sans-serif;\n    font-weight: 400;\n    font-style: normal;\n    font-size: 3rem;\n    text-align: center;\n}\n\n.sidebar .name{\n    display: flex;\n    width: auto;\n    align-items: center;\n    justify-content: start;\n}\n\n.sidebar .name-name {\n    font-size: 1.8rem;\n}\n\n.sidebar .name .name-icon {\n    width: 40px;\n    height: 40px;\n    border-radius: 50%;\n    background-image: url('../assets/user6.png');\n    background-size: contain;\n    background-repeat: no-repeat;\n    margin: 8px;\n}\n\n.sidebar .name-notification-icon {\n    padding-left: 50px;\n    \n}\n\nnav {\npadding: .5rem;\ndisplay: flex;\nflex-direction: column;\n}\n\n.nav-line {\n    width: 90%;\n    height: 1px;\n    background-color: grey;\n    margin-top: 3px;\n    margin-bottom: 12px;\n    justify-self: center;\n}\n\nnav {\n    display: flex;\n    flex-direction: column;\n    align-items: start;\n    justify-content: flex-start;\n    margin-bottom: 1rem;\n}\n\nnav button {\n    background-color: transparent;\n    border-style: none;\n    font-size: 1.1rem;\n    margin-top: 12px;\n    margin-bottom: 12px;\n    width: 100%;\n}\n\nnav button:hover {\n    border-bottom: solid red 1px;\n}\n\nnav .active {\n    border-radius: 8px;\n    background-color: var(--highlightColor);\n}\n\nnav .nav-project-container{\n    max-height: 200px;\n    overflow-y: auto;\n}\n\n/* Main Content  */\nmain{\n    margin: 1rem;\n    background-color: #fff;\n    width: 100%;\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n}\n\n.main-line {\n    width: 100%;\n    height: 1px;\n    background-color: #e5e5e5;;\n    margin-top: 12px;\n    margin-bottom: 12px;\n}\n\n/* Task Styling  */\n.task-header {\n    width: 100%;\n}\n\n.task-header h2{\n    text-align: center;\n    font-size: 2rem;\n}\n\n.tasks, .complete-tasks{\n    width: 90%;\n}\n\n.task {\n    width: 100%;\n    display: grid;\n    grid-template-columns:4fr 1fr ;\n}\n\n.task .title-box {\n    padding: 6px;\n}\n\n\nspan.priority {\n    font-size: 11px;\n    background-color: var(--highPriority);\n    padding: 6px;\n    border-radius: 8px;\n}\nspan.High {\n    background-color: var(--highPriority); \n}\nspan.Regular {\n    background-color: var(--regularPriority);\n}\nspan.Low {\n    background-color: var(--lowPriority);\n}\n\n.task .description-box {\n    padding-left: 30px;\n    font-size: .9rem;\n    color: var(--lightTextColor);\n}\n\n.edit-pane {\n    display: flex;\n    flex-direction: column;\n    visibility: hidden;\n}\n\n.edit-pane button {\n    cursor: pointer;\n    background-color: transparent;\n    border-style: none;\n    color: var(--lightTextColor);\n}\n.edit-pane button:hover {\n    color: var(--addButtonText);\n}\n\n.date {\n    color: #dc4c3e;\n    display: flex;\n    justify-content: start;\n    align-items: center;\n}\n\n.task-pane .title-box label {\n    font-size: 1.2rem;\n}\n\n/* Dialog container Stuff */\n.overlay {\n    position: fixed;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */\n    display: flex;\n    justify-content: center;\n    align-items: center;\n}\n\n\n.task-form-container {\n    background-color: var(--sidebarColorLight);\n    display: flex;\n    width: 60%;\n    padding: 1rem;\n    border-radius: 12px;\n    justify-content: center;\n}\n.task-form-container form{\n    display: flex;\n    flex-direction: column;\n    justify-content: center;\n    \n}\n.task-form-container form input, .task-form-container form button {\nmargin: 8px;\npadding: 6px;\n}\n\n.no-tasks{\n    width: 100%;\n    height: 100%;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    padding: 24px;\n    text-align: center;\n}\n\n\n/* Project Stuff */\n.project-container {\n    display: flex;\n    flex-direction: column;\n    width: 80%;\n}\n.project-info-container {\n    width: 100%;\n    margin-top: 60px;\n}\n\n.project-info-container input{\n    width: 100%;\n    border-style: none;\n    font-size: 2rem;\n    font-weight: bold;\n    \n    \n}\n\n.project-title-container input:focus{\n    outline: none;\n}\n\n.project-title-container{\n    display: flex;\n    padding: 8px;\n}\n\n.project-title-container button {\n    border-style: none;\n    background-color: transparent;\n    color: var(--lightTextColor);\n}\n\n.project-title-container button:hover{\n    color: var(--addButtonText);\n}\n\n.project-title-container:hover{\n    border: solid var(--lightTextColor) 1px;\n    border-radius: 8px;\n}\n\n\n.project-info-container textarea {\n    width: 100%;\n    border-style: none;\n    padding: 8px;\n}\n\n.project-info-container textarea:hover {\n    border-style: solid;\n    border-radius: 8px;\n\n}\n\n.add-project-task {\n    border-style: none;\n    background-color: transparent;\n    color: var(--lightTextColor)\n}\n\n.add-project-task span{\n    color: var(--addButtonText);\n    font-size: 1.5rem;\n    font-weight: light;\n}\n\n.add-project-task:hover {\n    border-bottom: solid var(--addButtonText) 1px;\n}\n\n/* Delete dialog box */\n#deleteConfirm{\n    display: flex;\n    flex-direction: column;\n    justify-content: center;\n    align-items: center;\n    padding: 12px;\n    border-radius: 12px;\n    background-color: var(--sidebarColorLight);\n    border: none;\n    box-shadow: 10px 4px 17px -1px rgba(0,0,0,0.56);\n    -webkit-box-shadow: 10px 4px 17px -1px rgba(0,0,0,0.56);\n    -moz-box-shadow: 10px 4px 17px -1px rgba(0,0,0,0.56);\n}\n#deleteConfirm .deleteMessage{\n    padding: 6px;\n    color: var(--addButtonText);\n}\n#deleteConfirm .deleteConfirmButtons button{\n    padding: 4px;\n    font-size: .7rem;\n    width: 32px;\n}\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -6103,7 +6221,6 @@ renderNavbar.render();
 
 // REnder all tasks page by default 
 var renderPage = new _render_renderPage__WEBPACK_IMPORTED_MODULE_3__["default"]();
-renderPage.renderPage();
 })();
 
 /******/ })()
