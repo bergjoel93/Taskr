@@ -121,7 +121,8 @@ function createTask(task) {
   var complete = task.complete;
   var taskElement = document.createElement('div');
   taskElement.classList.add('task');
-  taskElement.innerHTML = "\n        <div class=\"task-pane\" data-id=\"".concat(id, "\">\n            <div class=\"title-box\">\n                <input type=\"checkbox\" class=\"completed\" data-id=\"").concat(id, "\" ").concat(complete ? 'checked' : '', " >\n                <label for=\"").concat(id, "\">").concat(title, " <span class=\"priority ").concat(priority, "\">").concat(priority, "</span></label>\n            </div>\n            <div class=\"description-box\">").concat(description, "</div>\n            <div class=\"date\"><span class=\"material-symbols-outlined\">\n            calendar_month\n            </span>").concat(dueDate, "</div>\n        </div>\n        <div class=\"edit-pane\" id=\"edit-pane-").concat(id, "\">\n                <button class=\"edit\" data-id=\"").concat(id, "\"><span class=\"material-symbols-outlined\">\n                    edit_note\n                    </span></button>\n                <button class=\"delete\" data-id=\"").concat(id, "\"><span class=\"material-symbols-outlined\">\n                    delete\n                    </span></button>\n        </div>    \n            ");
+  taskElement.setAttribute('data-id', "".concat(id));
+  taskElement.innerHTML = "\n        <div class=\"task-pane\">\n            <div class=\"title-box\">\n                <input type=\"checkbox\" class=\"completed\" data-id=\"".concat(id, "\" ").concat(complete ? 'checked' : '', " >\n                <label for=\"").concat(id, "\">").concat(title, " <span class=\"priority ").concat(priority, "\">").concat(priority, "</span></label>\n            </div>\n            <div class=\"description-box\">").concat(description, "</div>\n            <div class=\"date\"><span class=\"material-symbols-outlined\">\n            calendar_month\n            </span>").concat(dueDate, "</div>\n        </div>\n        <div class=\"edit-pane\" id=\"edit-pane-").concat(id, "\">\n                <button class=\"edit\" data-id=\"").concat(id, "\"><span class=\"material-symbols-outlined\">\n                    edit_note\n                    </span></button>\n                <button class=\"delete\" data-id=\"").concat(id, "\"><span class=\"material-symbols-outlined\">\n                    delete\n                    </span></button>\n        </div>    \n            ");
   var mainLine = document.createElement('div');
   mainLine.classList.add('main-line');
   taskElement.appendChild(mainLine);
@@ -502,7 +503,7 @@ var HandlePage = /*#__PURE__*/function () {
         });
 
         // make a hovering event handler that shows the edit pane when user hovers over task. 
-        var taskPanes = document.querySelectorAll('.task-pane');
+        var taskPanes = document.querySelectorAll('.task');
         taskPanes.forEach(function (taskPane) {
           taskPane.addEventListener('mouseenter', function () {
             var id = taskPane.getAttribute('data-id');
