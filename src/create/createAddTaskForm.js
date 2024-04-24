@@ -12,6 +12,7 @@ function createTaskForm(task = null) {
         // Ensure the date string is correctly formatted for the date input field
         const taskDate = task ? new Date(task.date) : '';
         const formattedDate = taskDate ? taskDate.toISOString().substring(0, 10) : '';  // Adjusts the date string to 'YYYY-MM-DD'
+        console.log(formattedDate);
     
     
 

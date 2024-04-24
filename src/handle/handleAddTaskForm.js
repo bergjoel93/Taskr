@@ -10,6 +10,7 @@ import { parseISO } from "date-fns";
 
 
 function handleAddTaskForm(projectId = 1, taskId = null, filter = 'all') {
+    
     const form = document.querySelector('#newTaskForm');
     const submitBtn = form.querySelector('#submit');
     const cancelButton = form.querySelector('#cancel');
@@ -25,9 +26,10 @@ function handleAddTaskForm(projectId = 1, taskId = null, filter = 'all') {
         // get new task info
         const dateString = document.querySelector("#date").value; // returns a string that looks like "2024-04-25"
         
-        const date = new Date(dateString);
-        date.setHours(0,0,0,0); // set the time to midnight to normalize
+        const date = parseISO(dateString);
+        
 
+        console.log("Date:"+date);
 
         const newTask = {
             title: form.querySelector('#title').value,

@@ -26,7 +26,7 @@ function createTaskForm() {
   // Ensure the date string is correctly formatted for the date input field
   var taskDate = task ? new Date(task.date) : '';
   var formattedDate = taskDate ? taskDate.toISOString().substring(0, 10) : ''; // Adjusts the date string to 'YYYY-MM-DD'
-
+  console.log(formattedDate);
   taskForm.innerHTML = "\n        <form id=\"newTaskForm\">\n            <h2>".concat(task ? 'Edit Task' : 'Add New Task', "</h2>\n            <input type=\"text\" name=\"title\" id=\"title\" placeholder=\"Title\" required maxlength=\"40\" value=\"").concat(task ? task.title : '', "\">\n            <input type=\"text\" name=\"description\" id=\"description\" placeholder=\"Description...\" required maxlength=\"100\" value=\"").concat(task ? task.description : '', "\">\n            <input type=\"date\" id=\"date\" required value=\"").concat(formattedDate, "\">\n            <div class=\"priority-container\">\n                <label for=\"priority\">Priority Level</label>\n                <select id=\"priority\" required>\n                    <option value=\"Low\" ").concat(task && task.priority === 'Low' ? 'selected' : '', ">Low</option>\n                    <option value=\"Regular\" ").concat(task && task.priority === 'Regular' ? 'selected' : '', ">Regular</option>\n                    <option value=\"High\" ").concat(task && task.priority === 'High' ? 'selected' : '', ">High</option>\n                </select>\n            </div>\n            <input type=\"submit\" id=\"submit\" name=\"submit\" value=\"").concat(task ? 'Update Task' : 'Add Task', "\" style=\"cursor: pointer;\">\n            <button type=\"button\" id=\"cancel\">Cancel</button>\n        </form>\n    ");
   overlay.appendChild(taskForm);
   return overlay;
@@ -185,6 +185,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _render_renderAddTaskForm__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../render/renderAddTaskForm */ "./src/render/renderAddTaskForm.js");
 /* harmony import */ var _manage_ProjectManager__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../manage/ProjectManager */ "./src/manage/ProjectManager.js");
 /* harmony import */ var _render_renderPage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../render/renderPage */ "./src/render/renderPage.js");
+/* harmony import */ var date_fns__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! date-fns */ "./node_modules/date-fns/parseISO.mjs");
 
 
 
@@ -211,9 +212,8 @@ function handleAddTaskForm() {
     // get new task info
     var dateString = document.querySelector("#date").value; // returns a string that looks like "2024-04-25"
 
-    var date = new Date(dateString);
-    date.setHours(0, 0, 0, 0); // set the time to midnight to normalize
-
+    var date = (0,date_fns__WEBPACK_IMPORTED_MODULE_3__.parseISO)(dateString);
+    console.log("Date:" + date);
     var newTask = {
       title: form.querySelector('#title').value,
       description: form.querySelector('#description').value,
@@ -1349,13 +1349,14 @@ ___CSS_LOADER_EXPORT___.push([module.id, `:root {
 
 body {
     display: flex;
-    height: 100vh;
+    flex:1;
+    
 }
 /* Sidebar Stuff */
 .sidebar {
     display:flex;
     padding: .5rem;
-    height: auto;
+    flex: 1;
     width: 210px;
     max-width: 420px;
     min-width: 210px;
@@ -1682,7 +1683,7 @@ padding: 6px;
     font-size: .7rem;
     width: 32px;
 }
-`, "",{"version":3,"sources":["webpack://./src/styles/style.css"],"names":[],"mappings":"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","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Jersey+10&family=Reddit+Mono:wght@200..900&display=swap');\n:root {\n    --sidebarColorLight: #fffbeb;\n    --addButtonText: #a81f00;\n    --highlightColor: #ffedd5;\n    --profileImg: '../assets/user6.png';\n    --highPriority: #fca5a5;\n    --regularPriority: #bbf7d0;\n    --lowPriority: #93c5fd;\n    --lightTextColor: #6b7280;\n}\n* {\n    font-family: \"Reddit Mono\", monospace;\n    font-optical-sizing: auto;\n    font-style: normal;\n    margin: 0;\n    padding: 0;\n    box-sizing: border-box;\n}\n* button {\n    cursor: pointer;\n}\n\nbody {\n    display: flex;\n    height: 100vh;\n}\n/* Sidebar Stuff */\n.sidebar {\n    display:flex;\n    padding: .5rem;\n    height: auto;\n    width: 210px;\n    max-width: 420px;\n    min-width: 210px;\n    flex-shrink: 0;\n    background-color: var(--sidebarColorLight);\n    box-shadow: 8px -2px 23px -6px rgba(145,135,103,0.75);\n-webkit-box-shadow: 8px -2px 23px -6px rgba(145,135,103,0.75);\n-moz-box-shadow: 8px -2px 23px -6px rgba(145,135,103,0.75);\n}\n\n.sidebar .sidebar-title {\n    font-family: \"Jersey 10\", sans-serif;\n    font-weight: 400;\n    font-style: normal;\n    font-size: 3rem;\n    text-align: center;\n}\n\n.sidebar .name{\n    display: flex;\n    width: auto;\n    align-items: center;\n    justify-content: start;\n}\n\n.sidebar .name-name {\n    font-size: 1.8rem;\n}\n\n.sidebar .name .name-icon {\n    width: 40px;\n    height: 40px;\n    border-radius: 50%;\n    background-image: url('../assets/user6.png');\n    background-size: contain;\n    background-repeat: no-repeat;\n    margin: 8px;\n}\n\n.sidebar .name-notification-icon {\n    padding-left: 50px;\n    \n}\n\nnav {\npadding: .5rem;\ndisplay: flex;\nflex-direction: column;\n}\n\n.nav-line {\n    width: 90%;\n    height: 1px;\n    background-color: grey;\n    margin-top: 3px;\n    margin-bottom: 12px;\n    justify-self: center;\n}\n\nnav {\n    display: flex;\n    flex-direction: column;\n    align-items: start;\n    justify-content: flex-start;\n    margin-bottom: 1rem;\n}\n\nnav button {\n    background-color: transparent;\n    border-style: none;\n    font-size: 1.1rem;\n    margin-top: 12px;\n    margin-bottom: 12px;\n    width: 100%;\n}\n\nnav button:hover {\n    border-bottom: solid red 1px;\n}\n\nnav .active {\n    border-radius: 8px;\n    background-color: var(--highlightColor);\n}\n\nnav .nav-project-container{\n    max-height: 200px;\n    overflow-y: auto;\n}\n\n/* Main Content  */\nmain{\n    margin: 1rem;\n    background-color: #fff;\n    width: 100%;\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n}\n\n.main-line {\n    width: 100%;\n    height: 1px;\n    background-color: #e5e5e5;;\n    margin-top: 12px;\n    margin-bottom: 12px;\n}\n\n/* Task Styling  */\n.main-task-container{\n    width: 100%;\n    padding: 24px;\n}\n.task-header {\n    width: 100%;\n}\n\n.task-header h2{\n    text-align: center;\n    font-size: 2rem;\n}\n\n.tasks, .complete-tasks{\n    width: 90%;\n}\n\n.task {\n    width: 100%;\n    display: grid;\n    grid-template-columns:4fr 1fr ;\n}\n\n.task .title-box {\n    padding: 6px;\n}\n\n\nspan.priority {\n    font-size: 11px;\n    background-color: var(--highPriority);\n    padding: 6px;\n    border-radius: 8px;\n}\nspan.High {\n    background-color: var(--highPriority); \n}\nspan.Regular {\n    background-color: var(--regularPriority);\n}\nspan.Low {\n    background-color: var(--lowPriority);\n}\n\n.task .description-box {\n    padding-left: 30px;\n    font-size: .9rem;\n    color: var(--lightTextColor);\n}\n\n.edit-pane {\n    display: flex;\n    flex-direction: column;\n    visibility: hidden;\n}\n\n.edit-pane button {\n    cursor: pointer;\n    background-color: transparent;\n    border-style: none;\n    color: var(--lightTextColor);\n}\n.edit-pane button:hover {\n    color: var(--addButtonText);\n}\n\n.date {\n    color: #dc4c3e;\n    display: flex;\n    justify-content: start;\n    align-items: center;\n}\n\n.task-pane .title-box label {\n    font-size: 1.2rem;\n}\n\n/* Dialog container Stuff */\n.overlay {\n    position: fixed;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */\n    display: flex;\n    justify-content: center;\n    align-items: center;\n}\n\n\n.task-form-container {\n    background-color: var(--sidebarColorLight);\n    display: flex;\n    width: 60%;\n    padding: 1rem;\n    border-radius: 12px;\n    justify-content: center;\n}\n.task-form-container form{\n    display: flex;\n    flex-direction: column;\n    justify-content: center;\n    \n}\n.task-form-container form input, .task-form-container form button {\nmargin: 8px;\npadding: 6px;\n}\n\n.no-tasks{\n    width: 100%;\n    height: 100%;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    padding: 24px;\n    text-align: center;\n}\n\n\n/* Project Stuff */\n.project-container {\n    display: flex;\n    flex-direction: column;\n    width: 80%;\n}\n.project-info-container {\n    width: 100%;\n    margin-top: 60px;\n}\n\n.project-info-container input{\n    width: 100%;\n    border-style: none;\n    font-size: 2rem;\n    font-weight: bold;\n    \n    \n}\n\n.project-title-container input:focus{\n    outline: none;\n}\n\n.project-title-container{\n    display: flex;\n    padding: 8px;\n}\n\n.project-title-container button {\n    border-style: none;\n    background-color: transparent;\n    color: var(--lightTextColor);\n}\n\n.project-title-container button:hover{\n    color: var(--addButtonText);\n}\n\n.project-title-container:hover{\n    border: solid var(--lightTextColor) 1px;\n    border-radius: 8px;\n}\n\n\n.project-info-container textarea {\n    width: 100%;\n    border-style: none;\n    padding: 8px;\n}\n\n.project-info-container textarea:hover {\n    border-style: solid;\n    border-radius: 8px;\n\n}\n\n.add-project-task {\n    border-style: none;\n    background-color: transparent;\n    color: var(--lightTextColor)\n}\n\n.add-project-task span{\n    color: var(--addButtonText);\n    font-size: 1.5rem;\n    font-weight: light;\n}\n\n.add-project-task:hover {\n    border-bottom: solid var(--addButtonText) 1px;\n}\n\n/* Delete dialog box */\n#deleteConfirm{\n    display: flex;\n    flex-direction: column;\n    justify-content: center;\n    align-items: center;\n    padding: 12px;\n    border-radius: 12px;\n    background-color: var(--sidebarColorLight);\n    border: none;\n    box-shadow: 10px 4px 17px -1px rgba(0,0,0,0.56);\n    -webkit-box-shadow: 10px 4px 17px -1px rgba(0,0,0,0.56);\n    -moz-box-shadow: 10px 4px 17px -1px rgba(0,0,0,0.56);\n}\n#deleteConfirm .deleteMessage{\n    padding: 6px;\n    color: var(--addButtonText);\n}\n#deleteConfirm .deleteConfirmButtons button{\n    padding: 4px;\n    font-size: .7rem;\n    width: 32px;\n}\n"],"sourceRoot":""}]);
+`, "",{"version":3,"sources":["webpack://./src/styles/style.css"],"names":[],"mappings":"AACA;IACI,4BAA4B;IAC5B,wBAAwB;IACxB,yBAAyB;IACzB,mCAAmC;IACnC,uBAAuB;IACvB,0BAA0B;IAC1B,sBAAsB;IACtB,yBAAyB;AAC7B;AACA;IACI,qCAAqC;IACrC,yBAAyB;IACzB,kBAAkB;IAClB,SAAS;IACT,UAAU;IACV,sBAAsB;AAC1B;AACA;IACI,eAAe;AACnB;;AAEA;IACI,aAAa;IACb,MAAM;;AAEV;AACA,kBAAkB;AAClB;IACI,YAAY;IACZ,cAAc;IACd,OAAO;IACP,YAAY;IACZ,gBAAgB;IAChB,gBAAgB;IAChB,cAAc;IACd,0CAA0C;IAC1C,qDAAqD;AACzD,6DAA6D;AAC7D,0DAA0D;AAC1D;;AAEA;IACI,oCAAoC;IACpC,gBAAgB;IAChB,kBAAkB;IAClB,eAAe;IACf,kBAAkB;AACtB;;AAEA;IACI,aAAa;IACb,WAAW;IACX,mBAAmB;IACnB,sBAAsB;AAC1B;;AAEA;IACI,iBAAiB;AACrB;;AAEA;IACI,WAAW;IACX,YAAY;IACZ,kBAAkB;IAClB,yDAA4C;IAC5C,wBAAwB;IACxB,4BAA4B;IAC5B,WAAW;AACf;;AAEA;IACI,kBAAkB;;AAEtB;;AAEA;AACA,cAAc;AACd,aAAa;AACb,sBAAsB;AACtB;;AAEA;IACI,UAAU;IACV,WAAW;IACX,sBAAsB;IACtB,eAAe;IACf,mBAAmB;IACnB,oBAAoB;AACxB;;AAEA;IACI,aAAa;IACb,sBAAsB;IACtB,kBAAkB;IAClB,2BAA2B;IAC3B,mBAAmB;AACvB;;AAEA;IACI,6BAA6B;IAC7B,kBAAkB;IAClB,iBAAiB;IACjB,gBAAgB;IAChB,mBAAmB;IACnB,WAAW;AACf;;AAEA;IACI,4BAA4B;AAChC;;AAEA;IACI,kBAAkB;IAClB,uCAAuC;AAC3C;;AAEA;IACI,iBAAiB;IACjB,gBAAgB;AACpB;;AAEA,kBAAkB;AAClB;IACI,YAAY;IACZ,sBAAsB;IACtB,WAAW;IACX,aAAa;IACb,sBAAsB;IACtB,mBAAmB;AACvB;;AAEA;IACI,WAAW;IACX,WAAW;IACX,yBAAyB;IACzB,gBAAgB;IAChB,mBAAmB;AACvB;;AAEA,kBAAkB;AAClB;IACI,WAAW;IACX,aAAa;AACjB;AACA;IACI,WAAW;AACf;;AAEA;IACI,kBAAkB;IAClB,eAAe;AACnB;;AAEA;IACI,UAAU;AACd;;AAEA;IACI,WAAW;IACX,aAAa;IACb,8BAA8B;AAClC;;AAEA;IACI,YAAY;AAChB;;;AAGA;IACI,eAAe;IACf,qCAAqC;IACrC,YAAY;IACZ,kBAAkB;AACtB;AACA;IACI,qCAAqC;AACzC;AACA;IACI,wCAAwC;AAC5C;AACA;IACI,oCAAoC;AACxC;;AAEA;IACI,kBAAkB;IAClB,gBAAgB;IAChB,4BAA4B;AAChC;;AAEA;IACI,aAAa;IACb,sBAAsB;IACtB,kBAAkB;AACtB;;AAEA;IACI,eAAe;IACf,6BAA6B;IAC7B,kBAAkB;IAClB,4BAA4B;AAChC;AACA;IACI,2BAA2B;AAC/B;;AAEA;IACI,cAAc;IACd,aAAa;IACb,sBAAsB;IACtB,mBAAmB;AACvB;;AAEA;IACI,iBAAiB;AACrB;;AAEA,2BAA2B;AAC3B;IACI,eAAe;IACf,MAAM;IACN,OAAO;IACP,WAAW;IACX,YAAY;IACZ,8BAA8B,EAAE,6BAA6B;IAC7D,aAAa;IACb,uBAAuB;IACvB,mBAAmB;AACvB;;;AAGA;IACI,0CAA0C;IAC1C,aAAa;IACb,UAAU;IACV,aAAa;IACb,mBAAmB;IACnB,uBAAuB;AAC3B;AACA;IACI,aAAa;IACb,sBAAsB;IACtB,uBAAuB;;AAE3B;AACA;AACA,WAAW;AACX,YAAY;AACZ;;AAEA;IACI,WAAW;IACX,YAAY;IACZ,aAAa;IACb,uBAAuB;IACvB,mBAAmB;IACnB,aAAa;IACb,kBAAkB;AACtB;;;AAGA,kBAAkB;AAClB;IACI,aAAa;IACb,sBAAsB;IACtB,UAAU;AACd;AACA;IACI,WAAW;IACX,gBAAgB;AACpB;;AAEA;IACI,WAAW;IACX,kBAAkB;IAClB,eAAe;IACf,iBAAiB;;;AAGrB;;AAEA;IACI,aAAa;AACjB;;AAEA;IACI,aAAa;IACb,YAAY;AAChB;;AAEA;IACI,kBAAkB;IAClB,6BAA6B;IAC7B,4BAA4B;AAChC;;AAEA;IACI,2BAA2B;AAC/B;;AAEA;IACI,uCAAuC;IACvC,kBAAkB;AACtB;;;AAGA;IACI,WAAW;IACX,kBAAkB;IAClB,YAAY;AAChB;;AAEA;IACI,mBAAmB;IACnB,kBAAkB;;AAEtB;;AAEA;IACI,kBAAkB;IAClB,6BAA6B;IAC7B;AACJ;;AAEA;IACI,2BAA2B;IAC3B,iBAAiB;IACjB,kBAAkB;AACtB;;AAEA;IACI,6CAA6C;AACjD;;AAEA,sBAAsB;AACtB;IACI,aAAa;IACb,sBAAsB;IACtB,uBAAuB;IACvB,mBAAmB;IACnB,aAAa;IACb,mBAAmB;IACnB,0CAA0C;IAC1C,YAAY;IACZ,+CAA+C;IAC/C,uDAAuD;IACvD,oDAAoD;AACxD;AACA;IACI,YAAY;IACZ,2BAA2B;AAC/B;AACA;IACI,YAAY;IACZ,gBAAgB;IAChB,WAAW;AACf","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Jersey+10&family=Reddit+Mono:wght@200..900&display=swap');\n:root {\n    --sidebarColorLight: #fffbeb;\n    --addButtonText: #a81f00;\n    --highlightColor: #ffedd5;\n    --profileImg: '../assets/user6.png';\n    --highPriority: #fca5a5;\n    --regularPriority: #bbf7d0;\n    --lowPriority: #93c5fd;\n    --lightTextColor: #6b7280;\n}\n* {\n    font-family: \"Reddit Mono\", monospace;\n    font-optical-sizing: auto;\n    font-style: normal;\n    margin: 0;\n    padding: 0;\n    box-sizing: border-box;\n}\n* button {\n    cursor: pointer;\n}\n\nbody {\n    display: flex;\n    flex:1;\n    \n}\n/* Sidebar Stuff */\n.sidebar {\n    display:flex;\n    padding: .5rem;\n    flex: 1;\n    width: 210px;\n    max-width: 420px;\n    min-width: 210px;\n    flex-shrink: 0;\n    background-color: var(--sidebarColorLight);\n    box-shadow: 8px -2px 23px -6px rgba(145,135,103,0.75);\n-webkit-box-shadow: 8px -2px 23px -6px rgba(145,135,103,0.75);\n-moz-box-shadow: 8px -2px 23px -6px rgba(145,135,103,0.75);\n}\n\n.sidebar .sidebar-title {\n    font-family: \"Jersey 10\", sans-serif;\n    font-weight: 400;\n    font-style: normal;\n    font-size: 3rem;\n    text-align: center;\n}\n\n.sidebar .name{\n    display: flex;\n    width: auto;\n    align-items: center;\n    justify-content: start;\n}\n\n.sidebar .name-name {\n    font-size: 1.8rem;\n}\n\n.sidebar .name .name-icon {\n    width: 40px;\n    height: 40px;\n    border-radius: 50%;\n    background-image: url('../assets/user6.png');\n    background-size: contain;\n    background-repeat: no-repeat;\n    margin: 8px;\n}\n\n.sidebar .name-notification-icon {\n    padding-left: 50px;\n    \n}\n\nnav {\npadding: .5rem;\ndisplay: flex;\nflex-direction: column;\n}\n\n.nav-line {\n    width: 90%;\n    height: 1px;\n    background-color: grey;\n    margin-top: 3px;\n    margin-bottom: 12px;\n    justify-self: center;\n}\n\nnav {\n    display: flex;\n    flex-direction: column;\n    align-items: start;\n    justify-content: flex-start;\n    margin-bottom: 1rem;\n}\n\nnav button {\n    background-color: transparent;\n    border-style: none;\n    font-size: 1.1rem;\n    margin-top: 12px;\n    margin-bottom: 12px;\n    width: 100%;\n}\n\nnav button:hover {\n    border-bottom: solid red 1px;\n}\n\nnav .active {\n    border-radius: 8px;\n    background-color: var(--highlightColor);\n}\n\nnav .nav-project-container{\n    max-height: 200px;\n    overflow-y: auto;\n}\n\n/* Main Content  */\nmain{\n    margin: 1rem;\n    background-color: #fff;\n    width: 100%;\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n}\n\n.main-line {\n    width: 100%;\n    height: 1px;\n    background-color: #e5e5e5;;\n    margin-top: 12px;\n    margin-bottom: 12px;\n}\n\n/* Task Styling  */\n.main-task-container{\n    width: 100%;\n    padding: 24px;\n}\n.task-header {\n    width: 100%;\n}\n\n.task-header h2{\n    text-align: center;\n    font-size: 2rem;\n}\n\n.tasks, .complete-tasks{\n    width: 90%;\n}\n\n.task {\n    width: 100%;\n    display: grid;\n    grid-template-columns:4fr 1fr ;\n}\n\n.task .title-box {\n    padding: 6px;\n}\n\n\nspan.priority {\n    font-size: 11px;\n    background-color: var(--highPriority);\n    padding: 6px;\n    border-radius: 8px;\n}\nspan.High {\n    background-color: var(--highPriority); \n}\nspan.Regular {\n    background-color: var(--regularPriority);\n}\nspan.Low {\n    background-color: var(--lowPriority);\n}\n\n.task .description-box {\n    padding-left: 30px;\n    font-size: .9rem;\n    color: var(--lightTextColor);\n}\n\n.edit-pane {\n    display: flex;\n    flex-direction: column;\n    visibility: hidden;\n}\n\n.edit-pane button {\n    cursor: pointer;\n    background-color: transparent;\n    border-style: none;\n    color: var(--lightTextColor);\n}\n.edit-pane button:hover {\n    color: var(--addButtonText);\n}\n\n.date {\n    color: #dc4c3e;\n    display: flex;\n    justify-content: start;\n    align-items: center;\n}\n\n.task-pane .title-box label {\n    font-size: 1.2rem;\n}\n\n/* Dialog container Stuff */\n.overlay {\n    position: fixed;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */\n    display: flex;\n    justify-content: center;\n    align-items: center;\n}\n\n\n.task-form-container {\n    background-color: var(--sidebarColorLight);\n    display: flex;\n    width: 60%;\n    padding: 1rem;\n    border-radius: 12px;\n    justify-content: center;\n}\n.task-form-container form{\n    display: flex;\n    flex-direction: column;\n    justify-content: center;\n    \n}\n.task-form-container form input, .task-form-container form button {\nmargin: 8px;\npadding: 6px;\n}\n\n.no-tasks{\n    width: 100%;\n    height: 100%;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    padding: 24px;\n    text-align: center;\n}\n\n\n/* Project Stuff */\n.project-container {\n    display: flex;\n    flex-direction: column;\n    width: 80%;\n}\n.project-info-container {\n    width: 100%;\n    margin-top: 60px;\n}\n\n.project-info-container input{\n    width: 100%;\n    border-style: none;\n    font-size: 2rem;\n    font-weight: bold;\n    \n    \n}\n\n.project-title-container input:focus{\n    outline: none;\n}\n\n.project-title-container{\n    display: flex;\n    padding: 8px;\n}\n\n.project-title-container button {\n    border-style: none;\n    background-color: transparent;\n    color: var(--lightTextColor);\n}\n\n.project-title-container button:hover{\n    color: var(--addButtonText);\n}\n\n.project-title-container:hover{\n    border: solid var(--lightTextColor) 1px;\n    border-radius: 8px;\n}\n\n\n.project-info-container textarea {\n    width: 100%;\n    border-style: none;\n    padding: 8px;\n}\n\n.project-info-container textarea:hover {\n    border-style: solid;\n    border-radius: 8px;\n\n}\n\n.add-project-task {\n    border-style: none;\n    background-color: transparent;\n    color: var(--lightTextColor)\n}\n\n.add-project-task span{\n    color: var(--addButtonText);\n    font-size: 1.5rem;\n    font-weight: light;\n}\n\n.add-project-task:hover {\n    border-bottom: solid var(--addButtonText) 1px;\n}\n\n/* Delete dialog box */\n#deleteConfirm{\n    display: flex;\n    flex-direction: column;\n    justify-content: center;\n    align-items: center;\n    padding: 12px;\n    border-radius: 12px;\n    background-color: var(--sidebarColorLight);\n    border: none;\n    box-shadow: 10px 4px 17px -1px rgba(0,0,0,0.56);\n    -webkit-box-shadow: 10px 4px 17px -1px rgba(0,0,0,0.56);\n    -moz-box-shadow: 10px 4px 17px -1px rgba(0,0,0,0.56);\n}\n#deleteConfirm .deleteMessage{\n    padding: 6px;\n    color: var(--addButtonText);\n}\n#deleteConfirm .deleteConfirmButtons button{\n    padding: 4px;\n    font-size: .7rem;\n    width: 32px;\n}\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -5648,6 +5649,319 @@ const match = {
     defaultParseWidth: "any",
   }),
 };
+
+
+/***/ }),
+
+/***/ "./node_modules/date-fns/parseISO.mjs":
+/*!********************************************!*\
+  !*** ./node_modules/date-fns/parseISO.mjs ***!
+  \********************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
+/* harmony export */   parseISO: () => (/* binding */ parseISO)
+/* harmony export */ });
+/* harmony import */ var _constants_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./constants.mjs */ "./node_modules/date-fns/constants.mjs");
+
+
+/**
+ * The {@link parseISO} function options.
+ */
+
+/**
+ * @name parseISO
+ * @category Common Helpers
+ * @summary Parse ISO string
+ *
+ * @description
+ * Parse the given string in ISO 8601 format and return an instance of Date.
+ *
+ * Function accepts complete ISO 8601 formats as well as partial implementations.
+ * ISO 8601: http://en.wikipedia.org/wiki/ISO_8601
+ *
+ * If the argument isn't a string, the function cannot parse the string or
+ * the values are invalid, it returns Invalid Date.
+ *
+ * @typeParam DateType - The `Date` type, the function operates on. Gets inferred from passed arguments. Allows to use extensions like [`UTCDate`](https://github.com/date-fns/utc).
+ *
+ * @param argument - The value to convert
+ * @param options - An object with options
+ *
+ * @returns The parsed date in the local time zone
+ *
+ * @example
+ * // Convert string '2014-02-11T11:30:30' to date:
+ * const result = parseISO('2014-02-11T11:30:30')
+ * //=> Tue Feb 11 2014 11:30:30
+ *
+ * @example
+ * // Convert string '+02014101' to date,
+ * // if the additional number of digits in the extended year format is 1:
+ * const result = parseISO('+02014101', { additionalDigits: 1 })
+ * //=> Fri Apr 11 2014 00:00:00
+ */
+function parseISO(argument, options) {
+  const additionalDigits = options?.additionalDigits ?? 2;
+  const dateStrings = splitDateString(argument);
+
+  let date;
+  if (dateStrings.date) {
+    const parseYearResult = parseYear(dateStrings.date, additionalDigits);
+    date = parseDate(parseYearResult.restDateString, parseYearResult.year);
+  }
+
+  if (!date || isNaN(date.getTime())) {
+    return new Date(NaN);
+  }
+
+  const timestamp = date.getTime();
+  let time = 0;
+  let offset;
+
+  if (dateStrings.time) {
+    time = parseTime(dateStrings.time);
+    if (isNaN(time)) {
+      return new Date(NaN);
+    }
+  }
+
+  if (dateStrings.timezone) {
+    offset = parseTimezone(dateStrings.timezone);
+    if (isNaN(offset)) {
+      return new Date(NaN);
+    }
+  } else {
+    const dirtyDate = new Date(timestamp + time);
+    // JS parsed string assuming it's in UTC timezone
+    // but we need it to be parsed in our timezone
+    // so we use utc values to build date in our timezone.
+    // Year values from 0 to 99 map to the years 1900 to 1999
+    // so set year explicitly with setFullYear.
+    const result = new Date(0);
+    result.setFullYear(
+      dirtyDate.getUTCFullYear(),
+      dirtyDate.getUTCMonth(),
+      dirtyDate.getUTCDate(),
+    );
+    result.setHours(
+      dirtyDate.getUTCHours(),
+      dirtyDate.getUTCMinutes(),
+      dirtyDate.getUTCSeconds(),
+      dirtyDate.getUTCMilliseconds(),
+    );
+    return result;
+  }
+
+  return new Date(timestamp + time + offset);
+}
+
+const patterns = {
+  dateTimeDelimiter: /[T ]/,
+  timeZoneDelimiter: /[Z ]/i,
+  timezone: /([Z+-].*)$/,
+};
+
+const dateRegex =
+  /^-?(?:(\d{3})|(\d{2})(?:-?(\d{2}))?|W(\d{2})(?:-?(\d{1}))?|)$/;
+const timeRegex =
+  /^(\d{2}(?:[.,]\d*)?)(?::?(\d{2}(?:[.,]\d*)?))?(?::?(\d{2}(?:[.,]\d*)?))?$/;
+const timezoneRegex = /^([+-])(\d{2})(?::?(\d{2}))?$/;
+
+function splitDateString(dateString) {
+  const dateStrings = {};
+  const array = dateString.split(patterns.dateTimeDelimiter);
+  let timeString;
+
+  // The regex match should only return at maximum two array elements.
+  // [date], [time], or [date, time].
+  if (array.length > 2) {
+    return dateStrings;
+  }
+
+  if (/:/.test(array[0])) {
+    timeString = array[0];
+  } else {
+    dateStrings.date = array[0];
+    timeString = array[1];
+    if (patterns.timeZoneDelimiter.test(dateStrings.date)) {
+      dateStrings.date = dateString.split(patterns.timeZoneDelimiter)[0];
+      timeString = dateString.substr(
+        dateStrings.date.length,
+        dateString.length,
+      );
+    }
+  }
+
+  if (timeString) {
+    const token = patterns.timezone.exec(timeString);
+    if (token) {
+      dateStrings.time = timeString.replace(token[1], "");
+      dateStrings.timezone = token[1];
+    } else {
+      dateStrings.time = timeString;
+    }
+  }
+
+  return dateStrings;
+}
+
+function parseYear(dateString, additionalDigits) {
+  const regex = new RegExp(
+    "^(?:(\\d{4}|[+-]\\d{" +
+      (4 + additionalDigits) +
+      "})|(\\d{2}|[+-]\\d{" +
+      (2 + additionalDigits) +
+      "})$)",
+  );
+
+  const captures = dateString.match(regex);
+  // Invalid ISO-formatted year
+  if (!captures) return { year: NaN, restDateString: "" };
+
+  const year = captures[1] ? parseInt(captures[1]) : null;
+  const century = captures[2] ? parseInt(captures[2]) : null;
+
+  // either year or century is null, not both
+  return {
+    year: century === null ? year : century * 100,
+    restDateString: dateString.slice((captures[1] || captures[2]).length),
+  };
+}
+
+function parseDate(dateString, year) {
+  // Invalid ISO-formatted year
+  if (year === null) return new Date(NaN);
+
+  const captures = dateString.match(dateRegex);
+  // Invalid ISO-formatted string
+  if (!captures) return new Date(NaN);
+
+  const isWeekDate = !!captures[4];
+  const dayOfYear = parseDateUnit(captures[1]);
+  const month = parseDateUnit(captures[2]) - 1;
+  const day = parseDateUnit(captures[3]);
+  const week = parseDateUnit(captures[4]);
+  const dayOfWeek = parseDateUnit(captures[5]) - 1;
+
+  if (isWeekDate) {
+    if (!validateWeekDate(year, week, dayOfWeek)) {
+      return new Date(NaN);
+    }
+    return dayOfISOWeekYear(year, week, dayOfWeek);
+  } else {
+    const date = new Date(0);
+    if (
+      !validateDate(year, month, day) ||
+      !validateDayOfYearDate(year, dayOfYear)
+    ) {
+      return new Date(NaN);
+    }
+    date.setUTCFullYear(year, month, Math.max(dayOfYear, day));
+    return date;
+  }
+}
+
+function parseDateUnit(value) {
+  return value ? parseInt(value) : 1;
+}
+
+function parseTime(timeString) {
+  const captures = timeString.match(timeRegex);
+  if (!captures) return NaN; // Invalid ISO-formatted time
+
+  const hours = parseTimeUnit(captures[1]);
+  const minutes = parseTimeUnit(captures[2]);
+  const seconds = parseTimeUnit(captures[3]);
+
+  if (!validateTime(hours, minutes, seconds)) {
+    return NaN;
+  }
+
+  return (
+    hours * _constants_mjs__WEBPACK_IMPORTED_MODULE_0__.millisecondsInHour + minutes * _constants_mjs__WEBPACK_IMPORTED_MODULE_0__.millisecondsInMinute + seconds * 1000
+  );
+}
+
+function parseTimeUnit(value) {
+  return (value && parseFloat(value.replace(",", "."))) || 0;
+}
+
+function parseTimezone(timezoneString) {
+  if (timezoneString === "Z") return 0;
+
+  const captures = timezoneString.match(timezoneRegex);
+  if (!captures) return 0;
+
+  const sign = captures[1] === "+" ? -1 : 1;
+  const hours = parseInt(captures[2]);
+  const minutes = (captures[3] && parseInt(captures[3])) || 0;
+
+  if (!validateTimezone(hours, minutes)) {
+    return NaN;
+  }
+
+  return sign * (hours * _constants_mjs__WEBPACK_IMPORTED_MODULE_0__.millisecondsInHour + minutes * _constants_mjs__WEBPACK_IMPORTED_MODULE_0__.millisecondsInMinute);
+}
+
+function dayOfISOWeekYear(isoWeekYear, week, day) {
+  const date = new Date(0);
+  date.setUTCFullYear(isoWeekYear, 0, 4);
+  const fourthOfJanuaryDay = date.getUTCDay() || 7;
+  const diff = (week - 1) * 7 + day + 1 - fourthOfJanuaryDay;
+  date.setUTCDate(date.getUTCDate() + diff);
+  return date;
+}
+
+// Validation functions
+
+// February is null to handle the leap year (using ||)
+const daysInMonths = [31, null, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+function isLeapYearIndex(year) {
+  return year % 400 === 0 || (year % 4 === 0 && year % 100 !== 0);
+}
+
+function validateDate(year, month, date) {
+  return (
+    month >= 0 &&
+    month <= 11 &&
+    date >= 1 &&
+    date <= (daysInMonths[month] || (isLeapYearIndex(year) ? 29 : 28))
+  );
+}
+
+function validateDayOfYearDate(year, dayOfYear) {
+  return dayOfYear >= 1 && dayOfYear <= (isLeapYearIndex(year) ? 366 : 365);
+}
+
+function validateWeekDate(_year, week, day) {
+  return week >= 1 && week <= 53 && day >= 0 && day <= 6;
+}
+
+function validateTime(hours, minutes, seconds) {
+  if (hours === 24) {
+    return minutes === 0 && seconds === 0;
+  }
+
+  return (
+    seconds >= 0 &&
+    seconds < 60 &&
+    minutes >= 0 &&
+    minutes < 60 &&
+    hours >= 0 &&
+    hours < 25
+  );
+}
+
+function validateTimezone(_hours, minutes) {
+  return minutes >= 0 && minutes <= 59;
+}
+
+// Fallback for modularized imports:
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (parseISO);
 
 
 /***/ }),
