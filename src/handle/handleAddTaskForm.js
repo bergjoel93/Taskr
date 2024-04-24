@@ -22,38 +22,36 @@ function handleAddTaskForm(projectId = 1, taskId = null, filter = 'all') {
     
     submitBtn.addEventListener('click', (event) => {
         event.preventDefault();
-        console.log("submit has been pressed");
-        // get new task info
-        const dateString = document.querySelector("#date").value; // returns a string that looks like "2024-04-25"
+
+        if(form.checkValidity()){
+    
+            // get new task info
+            const dateString = document.querySelector("#date").value; // returns a string that looks like "2024-04-25"
+            const date = parseISO(dateString);
+            const newTask = {
+                title: form.querySelector('#title').value,
+                description: form.querySelector('#description').value,
+                date: date,
+                priority: form.querySelector("#priority").value,
+                complete: false
+            }
+            
+            if(taskId){ //updating an old task if there's a taskId. 
+                projectManager.updateProjectTask(projectId, taskId, newTask);
+            }
+            else { // creating and adding a new task. 
+                //Add task to project 
+                projectManager.addTaskToProject(projectId, newTask);
+            }
+
+            // close the form
+            closeTaskForm();
+            // re-render everything 
+            const pageRenderer = new RenderPage(projectId, filter);
+        }
+
         
-        const date = parseISO(dateString);
-        
-
-        console.log("Date:"+date);
-
-        const newTask = {
-            title: form.querySelector('#title').value,
-            description: form.querySelector('#description').value,
-            date: date,
-            priority: form.querySelector("#priority").value,
-            complete: false
-        }
-
-        if(taskId){ //updating an old task if there's a taskId. 
-            projectManager.updateProjectTask(projectId, taskId, newTask);
-        }
-        else { // creating and adding a new task. 
-            //Add task to project 
-            projectManager.addTaskToProject(projectId, newTask);
-        }
-
-        // close the form
-        closeTaskForm();
-        // re-render everything 
-        const pageRenderer = new RenderPage(projectId, filter);
     });
 }
-
-
 
 export default handleAddTaskForm;
