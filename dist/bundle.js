@@ -22,7 +22,12 @@ function createTaskForm() {
   overlay.classList.add('overlay');
   var taskForm = document.createElement('div');
   taskForm.classList.add('task-form-container');
-  taskForm.innerHTML = "\n        <form id=\"newTaskForm\">\n            <h2>".concat(task ? 'Edit Task' : 'Add New Task', "</h2>\n            <input type=\"text\" name=\"title\" id=\"title\" placeholder=\"Title\" required maxlength=\"40\" value=\"").concat(task ? task.title : '', "\">\n            <input type=\"text\" name=\"description\" id=\"description\" placeholder=\"Description...\" required maxlength=\"100\" value=\"").concat(task ? task.description : '', "\">\n            <input type=\"datetime-local\" id=\"date\" required value=\"").concat(task ? task.date.toISOString().substring(0, 16) : '', "\">\n            <div class=\"priority-container\">\n                <label for=\"priority\">Priority Level</label>\n                <select id=\"priority\" required>\n                    <option value=\"Low\" ").concat(task && task.priority === 'Low' ? 'selected' : '', ">Low</option>\n                    <option value=\"Regular\" ").concat(task && task.priority === 'Regular' ? 'selected' : '', ">Regular</option>\n                    <option value=\"High\" ").concat(task && task.priority === 'High' ? 'selected' : '', ">High</option>\n                </select>\n            </div>\n            <input type=\"submit\" id=\"submit\" name=\"submit\" value=\"").concat(task ? 'Update Task' : 'Add Task', "\" style=\"cursor: pointer;\">\n            <button type=\"button\" id=\"cancel\">Cancel</button>\n        </form>\n    ");
+
+  // Ensure the date string is correctly formatted for the date input field
+  var taskDate = task ? new Date(task.date) : '';
+  var formattedDate = taskDate ? taskDate.toISOString().substring(0, 10) : ''; // Adjusts the date string to 'YYYY-MM-DD'
+
+  taskForm.innerHTML = "\n        <form id=\"newTaskForm\">\n            <h2>".concat(task ? 'Edit Task' : 'Add New Task', "</h2>\n            <input type=\"text\" name=\"title\" id=\"title\" placeholder=\"Title\" required maxlength=\"40\" value=\"").concat(task ? task.title : '', "\">\n            <input type=\"text\" name=\"description\" id=\"description\" placeholder=\"Description...\" required maxlength=\"100\" value=\"").concat(task ? task.description : '', "\">\n            <input type=\"date\" id=\"date\" required value=\"").concat(formattedDate, "\">\n            <div class=\"priority-container\">\n                <label for=\"priority\">Priority Level</label>\n                <select id=\"priority\" required>\n                    <option value=\"Low\" ").concat(task && task.priority === 'Low' ? 'selected' : '', ">Low</option>\n                    <option value=\"Regular\" ").concat(task && task.priority === 'Regular' ? 'selected' : '', ">Regular</option>\n                    <option value=\"High\" ").concat(task && task.priority === 'High' ? 'selected' : '', ">High</option>\n                </select>\n            </div>\n            <input type=\"submit\" id=\"submit\" name=\"submit\" value=\"").concat(task ? 'Update Task' : 'Add Task', "\" style=\"cursor: pointer;\">\n            <button type=\"button\" id=\"cancel\">Cancel</button>\n        </form>\n    ");
   overlay.appendChild(taskForm);
   return overlay;
 }
@@ -116,7 +121,7 @@ function createTask(task) {
   var id = task.id;
   var title = task.title;
   var description = task.description;
-  var dueDate = (0,date_fns__WEBPACK_IMPORTED_MODULE_0__.format)(new Date(task.date), 'PPPp'); // Example: "April 12, 2024, 8:30 PM"
+  var dueDate = (0,date_fns__WEBPACK_IMPORTED_MODULE_0__.format)(new Date(task.date), 'PPP'); // Example: "April 12, 2024, 8:30 PM"
   var priority = task.priority;
   var complete = task.complete;
   var taskElement = document.createElement('div');
@@ -204,8 +209,11 @@ function handleAddTaskForm() {
     event.preventDefault();
     console.log("submit has been pressed");
     // get new task info
-    var dateString = document.querySelector("#date").value; // '2024-04-12T08:00'
+    var dateString = document.querySelector("#date").value; // returns a string that looks like "2024-04-25"
+
     var date = new Date(dateString);
+    date.setHours(0, 0, 0, 0); // set the time to midnight to normalize
+
     var newTask = {
       title: form.querySelector('#title').value,
       description: form.querySelector('#description').value,
