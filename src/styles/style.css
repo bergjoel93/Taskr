@@ -139,6 +139,10 @@ main{
 }
 
 /* Task Styling  */
+.main-task-container{
+    width: 100%;
+    padding: 24px;
+}
 .task-header {
     width: 100%;
 }
