@@ -13,8 +13,9 @@ function createTask(task){
 
     const taskElement = document.createElement('div');
     taskElement.classList.add('task');
+    taskElement.setAttribute('data-id',`${id}`);
     taskElement.innerHTML = `
-        <div class="task-pane" data-id="${id}">
+        <div class="task-pane">
             <div class="title-box">
                 <input type="checkbox" class="completed" data-id="${id}" ${complete ? 'checked' : ''} >
                 <label for="${id}">${title} <span class="priority ${priority}">${priority}</span></label>

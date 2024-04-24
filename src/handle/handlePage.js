@@ -133,7 +133,7 @@ class HandlePage {
             });
 
             // make a hovering event handler that shows the edit pane when user hovers over task. 
-            const taskPanes = document.querySelectorAll('.task-pane');
+            const taskPanes = document.querySelectorAll('.task');
             taskPanes.forEach(taskPane =>{
                 taskPane.addEventListener('mouseenter', ()=>{
                     const id = taskPane.getAttribute('data-id');
