@@ -23,8 +23,10 @@ function handleAddTaskForm(projectId = 1, taskId = null, filter = 'all') {
         event.preventDefault();
         console.log("submit has been pressed");
         // get new task info
-        const dateString = document.querySelector("#date").value; // '2024-04-12T08:00'
+        const dateString = document.querySelector("#date").value; // returns a string that looks like "2024-04-25"
+        
         const date = new Date(dateString);
+        date.setHours(0,0,0,0); // set the time to midnight to normalize
 
 
         const newTask = {
